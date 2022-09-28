@@ -1,4 +1,6 @@
-package game;
+package server;
+
+import client.Player;
 
 import java.util.ArrayList;
 import java.util.Iterator;
