@@ -1,4 +1,4 @@
-package Game2022.game;
+package game;
 
 public class Player {
 	String name;
