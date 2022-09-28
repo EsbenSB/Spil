@@ -1,4 +1,4 @@
-package Game2022.game;
+package game;
 
 public class Generel {
 	public static  String[] board = {    // 20x20
