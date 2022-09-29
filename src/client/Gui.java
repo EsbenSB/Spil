@@ -21,6 +21,12 @@ public class Gui extends Application {
 	public static Image image_wall;
 	public static Image hero_right,hero_left,hero_up,hero_down;
 
+	public static Image hero_shield_up;
+	public static Image hero_shield_down;
+	public static Image hero_shield_right;
+	public static Image hero_shield_left;
+
+
 	
 
 	private static Label[][] fields;
@@ -63,6 +69,12 @@ public class Gui extends Application {
 			hero_left   = new Image(getClass().getResourceAsStream("../images/heroLeft.png"),size,size,false,false);
 			hero_up     = new Image(getClass().getResourceAsStream("../images/heroUp.png"),size,size,false,false);
 			hero_down   = new Image(getClass().getResourceAsStream("../images/heroDown.png"),size,size,false,false);
+
+			// hero shield sprite
+			hero_shield_up = new Image(getClass().getResourceAsStream("../images/heroUpAura.png"),size,size,false,false);
+			hero_shield_down   = new Image(getClass().getResourceAsStream("../images/heroDownAura.png"),size,size,false,false);
+			hero_shield_right   = new Image(getClass().getResourceAsStream("../images/heroRightAura.png"),size,size,false,false);
+			hero_shield_left   = new Image(getClass().getResourceAsStream("../images/heroLeftAura.png"),size,size,false,false);
 
 			fields = new Label[20][20];
 			for (int j=0; j<20; j++) {

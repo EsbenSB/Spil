@@ -10,5 +10,6 @@
     <orderEntry type="library" name="JavaFX" level="application" />
     <orderEntry type="library" name="javafx-sdk-19" level="application" />
     <orderEntry type="library" name="JavaFx19" level="application" />
+    <orderEntry type="library" name="lib1" level="application" />
   </component>
 </module>
