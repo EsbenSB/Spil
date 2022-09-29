@@ -21,10 +21,7 @@ public class Gui extends Application {
 	public static Image image_wall;
 	public static Image hero_right,hero_left,hero_up,hero_down;
 
-	public static Image hero_shield_up;
-	public static Image hero_shield_down;
-	public static Image hero_shield_right;
-	public static Image hero_shield_left;
+	public static Image hero_shield_up, hero_shield_down, hero_shield_right, hero_shield_left;
 
 
 	
