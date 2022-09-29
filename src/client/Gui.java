@@ -21,7 +21,7 @@ public class Gui extends Application {
 	public static Image image_wall;
 	public static Image hero_right,hero_left,hero_up,hero_down;
 	public static Image hero_shield_up, hero_shield_down, hero_shield_right, hero_shield_left;
-
+	public static Image hero_blood_up, hero_blood_down, hero_blood_right, hero_blood_left;
 
 	
 
@@ -58,6 +58,8 @@ public class Gui extends Application {
 			
 			GridPane boardGrid = new GridPane();
 
+
+			//---- SPRITES ----
 			image_wall  = new Image(getClass().getResourceAsStream("../images/wall4.png"),size,size,false,false);
 			image_floor = new Image(getClass().getResourceAsStream("../images/floor1.png"),size,size,false,false);
 
@@ -71,6 +73,12 @@ public class Gui extends Application {
 			hero_shield_down   = new Image(getClass().getResourceAsStream("../images/heroDownAura.png"),size,size,false,false);
 			hero_shield_right   = new Image(getClass().getResourceAsStream("../images/heroRightAura.png"),size,size,false,false);
 			hero_shield_left   = new Image(getClass().getResourceAsStream("../images/heroLeftAura.png"),size,size,false,false);
+
+			// hero blood sprite
+			hero_blood_up = new Image(getClass().getResourceAsStream("../images/heroUpBlood.png"),size,size,false,false);
+			hero_blood_down = new Image(getClass().getResourceAsStream("../images/heroDownBlood.png"),size,size,false,false);
+			hero_blood_right = new Image(getClass().getResourceAsStream("../images/heroRightBlood.png"),size,size,false,false);
+			hero_blood_left = new Image(getClass().getResourceAsStream("../images/heroLeftBlood.png"),size,size,false,false);
 
 			fields = new Label[20][20];
 			for (int j=0; j<20; j++) {
