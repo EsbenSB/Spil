@@ -20,7 +20,6 @@ public class Gui extends Application {
 	public static Image image_floor;
 	public static Image image_wall;
 	public static Image hero_right,hero_left,hero_up,hero_down;
-
 	public static Image hero_shield_up, hero_shield_down, hero_shield_right, hero_shield_left;
 
 
@@ -91,8 +90,8 @@ public class Gui extends Application {
 			scoreList.setEditable(false);
 			
 			
-			grid.add(mazeLabel,  0, 0); 
-			grid.add(scoreLabel, 1, 0); 
+			grid.add(mazeLabel,  0, 0);
+			grid.add(scoreLabel, 1, 0);
 			grid.add(boardGrid,  0, 1);
 			grid.add(scoreList,  1, 1);
 						
