@@ -1,4 +1,4 @@
-package server;
+package test;
 
 import server.components.MazeGenerator;
 import utils.PackageService;
