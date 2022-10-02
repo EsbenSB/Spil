@@ -16,7 +16,7 @@ public class MazeGenTest {
     int[][] grid = mazeGenerator.getGrid();
     System.out.println("Grid on server:      " + Arrays.deepToString(grid));
 
-    HashMap<String, String> gridData = PackageService.constructGridData(grid);
+    HashMap<String, String> gridData = PackageService.constructGridMap(grid);
     System.out.println("Grid map on Server:  " + gridData);
 
     String query = PackageService.constructQuery(gridData);
@@ -25,7 +25,7 @@ public class MazeGenTest {
     HashMap<String, String> data = PackageService.deconstructQuery(query);
     System.out.println("Grid map on Client:  " + data);
 
-    int[][] receivedGrid = PackageService.deconstructGridData(data);
+    int[][] receivedGrid = PackageService.deconstructGridMap(data);
     System.out.println("Grid on Client:      " + Arrays.deepToString(receivedGrid));
 
     System.out.println();
