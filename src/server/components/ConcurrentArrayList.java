@@ -1,4 +1,4 @@
-package server;
+package server.components;
 
 import client.Player;
 

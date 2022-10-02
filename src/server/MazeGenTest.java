@@ -1,11 +1,12 @@
 package server;
 
+import server.components.MazeGenerator;
 import utils.PackageService;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Test {
+public class MazeGenTest {
 
   public static void main(String[] args) {
     MazeGenerator mazeGenerator = new MazeGenerator(10, 10);
