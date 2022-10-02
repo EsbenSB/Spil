@@ -8,9 +8,11 @@ import java.util.HashMap;
 public class Test {
 
   public static void main(String[] args) {
-    Maze maze = new Maze(10, 10);
+    MazeGenerator mazeGenerator = new MazeGenerator(10, 10);
+    int[][] maze = mazeGenerator.getMaze();
+    System.out.println("Maze:                " + Arrays.deepToString(maze));
 
-    int[][] grid = maze.getGrid();
+    int[][] grid = mazeGenerator.getGrid();
     System.out.println("Grid on server:      " + Arrays.deepToString(grid));
 
     HashMap<String, String> gridData = PackageService.constructGridData(grid);
@@ -26,7 +28,7 @@ public class Test {
     System.out.println("Grid on Client:      " + Arrays.deepToString(receivedGrid));
 
     System.out.println();
-    Maze.prettyPrintGrid(grid);
+    mazeGenerator.prettyPrint();
   }
 
 }
