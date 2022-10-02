@@ -108,23 +108,23 @@ public class MazeGenerator {
   }
 
   private void generatePowerups() {
-    for (int row = 0; row < maze.length; row++) {
-      for (int col = 0; col < maze[0].length; col++) {
-        if (maze[row][col] != -1) continue;
+    for (int row = 0; row < grid.length; row++) {
+      for (int col = 0; col < grid[0].length; col++) {
+        if (grid[row][col] != -1) continue;
 
         double percentage = .0667;
         boolean isPowerup = Math.random() <= percentage;
         if (!isPowerup) continue;
 
         double chance = Math.random();
-        if      (chance < .2500) maze[row][col] = 2;  // Trap
-        else if (chance < .5000) maze[row][col] = 7;  // Shield
-        else if (chance < .6250) maze[row][col] = 5;  // Speed boost
-        else if (chance < .7500) maze[row][col] = 6;  // Gun
-        else if (chance < .8750) maze[row][col] = 9;  // Bomb
-        else if (chance < .9325) maze[row][col] = 3;  // Super star
-        else if (chance < .9900) maze[row][col] = 8;  // Demon
-        else                     maze[row][col] = 4;  // Pickaxe
+        if      (chance < .2500) grid[row][col] = 2;  // Trap
+        else if (chance < .5000) grid[row][col] = 7;  // Shield
+        else if (chance < .6250) grid[row][col] = 5;  // Speed boost
+        else if (chance < .7500) grid[row][col] = 6;  // Gun
+        else if (chance < .8750) grid[row][col] = 9;  // Bomb
+        else if (chance < .9325) grid[row][col] = 3;  // Super star
+        else if (chance < .9900) grid[row][col] = 8;  // Demon
+        else                     grid[row][col] = 4;  // Pickaxe
       }
     }
   }
