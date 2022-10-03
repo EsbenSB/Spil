@@ -152,6 +152,25 @@ public class Gui extends Application {
 			};
 			});
 	}
+
+	public static void placeBloodyPlayerOnScreen(Pair newpos, String direction) {
+		Platform.runLater(() -> {
+			int newx = newpos.getX(); // Skal nok bruge den gamle pos.
+			int newy = newpos.getY();
+			if (direction.equals("right")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_right));
+			};
+			if (direction.equals("left")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_left));
+			};
+			if (direction.equals("up")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_up));
+			};
+			if (direction.equals("down")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_down));
+			};
+		});
+	}
 	
 	public static void movePlayerOnScreen(Pair oldpos, Pair newpos, String direction)
 	{
@@ -182,6 +201,6 @@ public class Gui extends Application {
 
 
 
-	
+
 }
 
