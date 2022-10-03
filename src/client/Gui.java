@@ -85,7 +85,9 @@ public class Gui extends Application {
 			GridPane boardGrid = new GridPane();
 
 
-			//XXXX GAMLE SPRITES XXXX
+			// --- Whole lotta SPRITES ---
+
+
 			image_wall  = new Image(getClass().getResourceAsStream("../images/0_1.jpeg"),size,size,false,false);
 			image_floor = new Image(getClass().getResourceAsStream("../images/-1.jpeg"),size,size,false,false);
 
