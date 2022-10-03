@@ -2,6 +2,7 @@ package server;
 
 import client.Player;
 import utils.CommunicationService;
+import utils.NetworkUser;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Server {
+public class Server implements NetworkUser {
 
   private final ServerSocket serverSocket;
   private final ArrayList<CommunicationService> connections = new ArrayList<>();
@@ -55,17 +56,19 @@ public class Server {
     commService.sendData(data);
   }
 
-  public void clientDisconnected(CommunicationService commService) {
+  @Override
+  public void processData(HashMap<String, String> data) {
+    if(data.get("task").equals("init")){
+      String client_name = data.get("client_name");
+
+      // TODO: Save the clients name
+    }
+  }
+
+  @Override
+  public void commDisconnected(CommunicationService commService) {
     connections.remove(commService);
     System.out.println("Client disconnected");
-  }
-
-  public void processData(HashMap<String, String> data){
-  if(data.get("task").equals("init")){
-
-  data.put("")
-
-  }
   }
 
   public static void main(String[] args) {

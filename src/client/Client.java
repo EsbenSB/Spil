@@ -1,6 +1,7 @@
 package client;
 
 import utils.CommunicationService;
+import utils.NetworkUser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,9 +10,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import static client.GameLogic.getRandomFreePosition;
-
-public class Client {
+public class Client implements NetworkUser {
   String id;
 
 
@@ -22,7 +21,7 @@ public class Client {
     id = null;
     try {
       Socket connectionSocket = new Socket("localhost", 6389);
-      CommunicationService commService = new CommunicationService(connectionSocket);
+      CommunicationService commService = new CommunicationService(this, connectionSocket);
       commService.start();
       Scanner scanner = new Scanner(System.in);
 
@@ -34,8 +33,8 @@ public class Client {
 
       String input = scanner.nextLine();
 
-          commService.sendMessage(input);
-          //commService.sendPlayer(me);
+//      commService.sendData(input);
+//      commService.sendPlayer(me);
 
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -50,10 +49,14 @@ public class Client {
     return id;
   }
 
-  public void processData(HashMap<String, String> data){
-    if(data.get("task").equals("init")){
+  @Override
+  public void processData(HashMap<String, String> data) {
+    // TODO: Process the data!!!
+  }
 
-    }
+  @Override
+  public void commDisconnected(CommunicationService commService) {
+    // TODO: Communication was shut down!!!
   }
 
   public static void main(String[] args) {
