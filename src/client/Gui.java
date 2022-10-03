@@ -118,7 +118,7 @@ public class Gui extends Application {
 			hero1_up = new Image(getClass().getResourceAsStream("../images/hero1_up.jpg"),size,size,false,false);
 			hero1_down = new Image(getClass().getResourceAsStream("../images/hero1_down.jpg"),size,size,false,false);
 
-			hero1_shield_up = new Image(getClass().getResourceAsStream("../images/hero1_up_shield.jpg"),size,size,false,false);
+			hero1_shield_up = new Image(getClass().getResourceAsStream("../images/hero1_shield_up.jpg"),size,size,false,false);
 			hero1_shield_down   = new Image(getClass().getResourceAsStream("../images/hero1_down_shield.jpg"),size,size,false,false);
 			hero1_shield_right   = new Image(getClass().getResourceAsStream("../images/hero1_right_shield.jpg"),size,size,false,false);
 			hero1_shield_left   = new Image(getClass().getResourceAsStream("../images/hero1_left_shield.jpg"),size,size,false,false);

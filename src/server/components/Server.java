@@ -2,6 +2,7 @@ package server.components;
 
 import utils.Config;
 import utils.Logger;
+import utils.PackageService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -58,5 +59,9 @@ public class Server {
 
   private void clientConnected(Socket connectionSocket) {
     Logger.info("%s connected", connectionSocket.getRemoteSocketAddress());
+  }
+
+  public void receivedQuery(String query) {
+    HashMap<String, String> data = PackageService.deconstructQuery(query);
   }
 }
