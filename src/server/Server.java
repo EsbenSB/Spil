@@ -1,18 +1,21 @@
 package server;
 
 import client.Player;
+import utils.CommunicationService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.HashMap;
 
 public class Server {
 
   private final ServerSocket serverSocket;
   private final ArrayList<CommunicationService> connections = new ArrayList<>();
   private final ArrayList<Player> players = new ArrayList<>();
+  private int id = 1;
+  String message;
 
   public Server() {
     try {
@@ -23,17 +26,11 @@ public class Server {
 
     ConnectionService connectionService = new ConnectionService(this);
     connectionService.start();
-    Scanner scanner = new Scanner(System.in);
+
 
     boolean running = true;
     while (running) {
-      String input = scanner.nextLine();
-
-      if (input.equals("close")) {
-        connectionService.setRunning(false);
-        connections.forEach(commService -> commService.setRunning(false));
-        running = false;
-      }
+     // System.out.println("What is your name?");
     }
   }
 
@@ -50,11 +47,25 @@ public class Server {
     commService.start();
     connections.add(commService);
     System.out.println("Client connected");
+
+    HashMap<String, String> data = new HashMap<>();
+    data.put("task","init");
+    data.put("client_id",Integer.toString(id));
+    id++;
+    commService.sendData(data);
   }
 
   public void clientDisconnected(CommunicationService commService) {
     connections.remove(commService);
     System.out.println("Client disconnected");
+  }
+
+  public void processData(HashMap<String, String> data){
+  if(data.get("task").equals("init")){
+
+  data.put("")
+
+  }
   }
 
   public static void main(String[] args) {

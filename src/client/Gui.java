@@ -191,7 +191,8 @@ public class Gui extends Application {
 				case DOWN:  playerMoved(0,+1,"down");  break;
 				case LEFT:  playerMoved(-1,0,"left");  break;
 				case RIGHT: playerMoved(+1,0,"right"); break;
-				case ESCAPE:System.exit(0); 
+				case ESCAPE:System.exit(0);
+					case SPACE:
 				default: break;
 				}
 			});
@@ -267,6 +268,16 @@ public class Gui extends Application {
 	public void playerMoved(int delta_x, int delta_y, String direction) {
 		GameLogic.updatePlayer(delta_x,delta_y,direction);
 		updateScoreTable();
+	}
+
+	public void findItem(int delta_x, int delta_y, int item){
+		GameLogic.grabItem(delta_x,delta_y,item);
+
+		//if(Pair  )
+	}
+
+	public void useItem(int delta_x, int delta_y, int item){
+	GameLogic.placeItem(delta_x,delta_y,item);
 	}
 	
 	public String getScoreList() {
