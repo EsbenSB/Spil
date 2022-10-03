@@ -5,12 +5,16 @@ public class Player {
 	Pair location;
 	int point;
 	String direction;
+	int item;
+	int condition;
 
 	public Player(String name, Pair loc, String direction) {
 		this.name = name;
 		this.location = loc;
 		this.direction = direction;
 		this.point = 0;
+		this.item = 0;
+		this.condition = 0;
 	};
 	
 	public Pair getLocation() {

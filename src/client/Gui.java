@@ -60,25 +60,25 @@ public class Gui extends Application {
 
 
 			//---- SPRITES ----
-			image_wall  = new Image(getClass().getResourceAsStream("../images/wall4.png"),size,size,false,false);
-			image_floor = new Image(getClass().getResourceAsStream("../images/floor1.png"),size,size,false,false);
+			image_wall  = new Image(getClass().getResourceAsStream("../images/wall4.jpg"),size,size,false,false);
+			image_floor = new Image(getClass().getResourceAsStream("../images/floor1.jpg"),size,size,false,false);
 
-			hero_right  = new Image(getClass().getResourceAsStream("../images/heroRight.png"),size,size,false,false);
-			hero_left   = new Image(getClass().getResourceAsStream("../images/heroLeft.png"),size,size,false,false);
-			hero_up     = new Image(getClass().getResourceAsStream("../images/heroUp.png"),size,size,false,false);
-			hero_down   = new Image(getClass().getResourceAsStream("../images/heroDown.png"),size,size,false,false);
+			hero_right  = new Image(getClass().getResourceAsStream("../images/heroRight.jpg"),size,size,false,false);
+			hero_left   = new Image(getClass().getResourceAsStream("../images/heroLeft.jpg"),size,size,false,false);
+			hero_up     = new Image(getClass().getResourceAsStream("../images/heroUp.jpg"),size,size,false,false);
+			hero_down   = new Image(getClass().getResourceAsStream("../images/heroDown.jpg"),size,size,false,false);
 
 			// hero shield sprite
-			hero_shield_up = new Image(getClass().getResourceAsStream("../images/heroUpAura.png"),size,size,false,false);
-			hero_shield_down   = new Image(getClass().getResourceAsStream("../images/heroDownAura.png"),size,size,false,false);
-			hero_shield_right   = new Image(getClass().getResourceAsStream("../images/heroRightAura.png"),size,size,false,false);
-			hero_shield_left   = new Image(getClass().getResourceAsStream("../images/heroLeftAura.png"),size,size,false,false);
+			hero_shield_up = new Image(getClass().getResourceAsStream("../images/heroUpAura.jpg"),size,size,false,false);
+			hero_shield_down   = new Image(getClass().getResourceAsStream("../images/heroDownAura.jpg"),size,size,false,false);
+			hero_shield_right   = new Image(getClass().getResourceAsStream("../images/heroRightAura.jpg"),size,size,false,false);
+			hero_shield_left   = new Image(getClass().getResourceAsStream("../images/heroLeftAura.jpg"),size,size,false,false);
 
 			// hero blood sprite
-			hero_blood_up = new Image(getClass().getResourceAsStream("../images/heroUpBlood.png"),size,size,false,false);
-			hero_blood_down = new Image(getClass().getResourceAsStream("../images/heroDownBlood.png"),size,size,false,false);
-			hero_blood_right = new Image(getClass().getResourceAsStream("../images/heroRightBlood.png"),size,size,false,false);
-			hero_blood_left = new Image(getClass().getResourceAsStream("../images/heroLeftBlood.png"),size,size,false,false);
+			hero_blood_up = new Image(getClass().getResourceAsStream("../images/heroUpBlood.jpg"),size,size,false,false);
+			hero_blood_down = new Image(getClass().getResourceAsStream("../images/heroDownBlood.jpg"),size,size,false,false);
+			hero_blood_right = new Image(getClass().getResourceAsStream("../images/heroRightBlood.jpg"),size,size,false,false);
+			hero_blood_left = new Image(getClass().getResourceAsStream("../images/heroLeftBlood.jpg"),size,size,false,false);
 
 			fields = new Label[20][20];
 			for (int j=0; j<20; j++) {

@@ -1,5 +1,7 @@
 package server;
 
+import client.Player;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +12,7 @@ public class Server {
 
   private final ServerSocket serverSocket;
   private final ArrayList<CommunicationService> connections = new ArrayList<>();
+  private final ArrayList<Player> players = new ArrayList<>();
 
   public Server() {
     try {
@@ -42,6 +45,7 @@ public class Server {
     CommunicationService commService = new CommunicationService(this, connectionSocket);
     commService.start();
     connections.add(commService);
+    //players.add()
     System.out.println("Client connected");
   }
 

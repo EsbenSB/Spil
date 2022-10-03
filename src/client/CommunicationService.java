@@ -50,6 +50,14 @@ public class CommunicationService extends Thread {
     }
   }
 
+  public void sendPlayer(Player player) {
+    try {
+      outToServer.writeBytes(player + "\n");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public void setRunning(boolean running) {
     this.running = running;
   }
