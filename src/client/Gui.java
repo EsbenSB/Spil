@@ -60,25 +60,25 @@ public class Gui extends Application {
 
 
 			//---- SPRITES ----
-			image_wall  = new Image(getClass().getResourceAsStream("../images/wall4.png"),size,size,false,false);
-			image_floor = new Image(getClass().getResourceAsStream("../images/floor1.png"),size,size,false,false);
+			image_wall  = new Image(getClass().getResourceAsStream("../images/0_1.jpeg"),size,size,false,false);
+			image_floor = new Image(getClass().getResourceAsStream("../images/-1.jpeg"),size,size,false,false);
 
-			hero_right  = new Image(getClass().getResourceAsStream("../images/heroRight.png"),size,size,false,false);
-			hero_left   = new Image(getClass().getResourceAsStream("../images/heroLeft.png"),size,size,false,false);
-			hero_up     = new Image(getClass().getResourceAsStream("../images/heroUp.png"),size,size,false,false);
-			hero_down   = new Image(getClass().getResourceAsStream("../images/heroDown.png"),size,size,false,false);
+			hero_right  = new Image(getClass().getResourceAsStream("../images/1_1_0_0_0.jpeg"),size,size,false,false);
+			hero_left   = new Image(getClass().getResourceAsStream("../images/1_-1_0_0_0.jpeg"),size,size,false,false);
+			hero_up     = new Image(getClass().getResourceAsStream("../images/1_0_-1_0_0.jpeg"),size,size,false,false);
+			hero_down   = new Image(getClass().getResourceAsStream("../images/1_0_1_0_0.jpeg"),size,size,false,false);
 
 			// hero shield sprite
-			hero_shield_up = new Image(getClass().getResourceAsStream("../images/heroUpAura.png"),size,size,false,false);
-			hero_shield_down   = new Image(getClass().getResourceAsStream("../images/heroDownAura.png"),size,size,false,false);
-			hero_shield_right   = new Image(getClass().getResourceAsStream("../images/heroRightAura.png"),size,size,false,false);
-			hero_shield_left   = new Image(getClass().getResourceAsStream("../images/heroLeftAura.png"),size,size,false,false);
+			hero_shield_up = new Image(getClass().getResourceAsStream("../images/1_0_-1_7_0.jpeg"),size,size,false,false);
+			hero_shield_down   = new Image(getClass().getResourceAsStream("../images/1_0_1_7_0.jpeg"),size,size,false,false);
+			hero_shield_right   = new Image(getClass().getResourceAsStream("../images/1_1_0_7_0.jpeg"),size,size,false,false);
+			hero_shield_left   = new Image(getClass().getResourceAsStream("../images/1_-1_0_7_0.jpeg"),size,size,false,false);
 
 			// hero blood sprite
-			hero_blood_up = new Image(getClass().getResourceAsStream("../images/heroUpBlood.png"),size,size,false,false);
-			hero_blood_down = new Image(getClass().getResourceAsStream("../images/heroDownBlood.png"),size,size,false,false);
-			hero_blood_right = new Image(getClass().getResourceAsStream("../images/heroRightBlood.png"),size,size,false,false);
-			hero_blood_left = new Image(getClass().getResourceAsStream("../images/heroLeftBlood.png"),size,size,false,false);
+			hero_blood_up = new Image(getClass().getResourceAsStream("../images/1_0_-1_6_0.jpeg"),size,size,false,false);
+			hero_blood_down = new Image(getClass().getResourceAsStream("../images/1_0_1_6_0.jpeg"),size,size,false,false);
+			hero_blood_right = new Image(getClass().getResourceAsStream("../images/1_1_0_6_0.jpeg"),size,size,false,false);
+			hero_blood_left = new Image(getClass().getResourceAsStream("../images/1_-1_0_6_0.jpeg"),size,size,false,false);
 
 			fields = new Label[20][20];
 			for (int j=0; j<20; j++) {
@@ -152,6 +152,25 @@ public class Gui extends Application {
 			};
 			});
 	}
+
+	public static void placeBloodyPlayerOnScreen(Pair newpos, String direction) {
+		Platform.runLater(() -> {
+			int newx = newpos.getX(); // Skal nok bruge den gamle pos.
+			int newy = newpos.getY();
+			if (direction.equals("right")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_right));
+			};
+			if (direction.equals("left")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_left));
+			};
+			if (direction.equals("up")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_up));
+			};
+			if (direction.equals("down")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_down));
+			};
+		});
+	}
 	
 	public static void movePlayerOnScreen(Pair oldpos, Pair newpos, String direction)
 	{
@@ -182,6 +201,6 @@ public class Gui extends Application {
 
 
 
-	
+
 }
 

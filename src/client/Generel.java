@@ -22,6 +22,7 @@ public class Generel {
 			"w w      ww w     ww",
 			"w   w   ww  w      w",
 			"wwwwwwwwwwwwwwwwwwww"
+
 	};
 
 	

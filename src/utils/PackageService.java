@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class PackageService {
-  public static HashMap<String, String> constructGridData(int[][] grid) {
+  public static HashMap<String, String> constructGridMap(int[][] grid) {
     String[][] stringMaze = new String[grid.length][grid[0].length];
 
     for (int row = 0; row < grid.length; row++) {
@@ -31,7 +31,7 @@ public abstract class PackageService {
     return gridData;
   }
 
-  public static int[][] deconstructGridData(HashMap<String, String> data) {
+  public static int[][] deconstructGridMap(HashMap<String, String> data) {
     int width = Integer.parseInt(data.get("width"));
     int height = Integer.parseInt(data.get("height"));
     String gridString = data.get("grid");
