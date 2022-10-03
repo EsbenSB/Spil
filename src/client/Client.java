@@ -40,7 +40,7 @@ public class Client {
           running = false;
         } else {
           commService.sendMessage(input);
-          commService.sendPlayer(me);
+          //commService.sendPlayer(me);
         }
       }
     } catch (IOException e) {
