@@ -34,13 +34,19 @@ public class CommunicationService extends Thread {
     Pair p=getRandomFreePosition();
     Player player = new Player(null,p,"up");
 
+
+    try {
+      String fromClient = inFromClient.readLine();
+      player.setName(fromClient);
+      server.addPlayers(player);
+      System.out.println(fromClient);
+      outToClient.writeBytes("Recieved message.\n");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     while (running) {
       try {
         String fromClient = inFromClient.readLine();
-        player.setName(fromClient);
-        server.addPlayers(player);
-        System.out.println(fromClient);
-        outToClient.writeBytes("Recieved message.\n");
       } catch (IOException e) {
         server.clientDisconnected(this);
         running = false;
