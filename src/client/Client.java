@@ -16,17 +16,17 @@ public class Client {
 
   public Client() {
     try {
-      Socket connectionSocket = new Socket("localhost", 6789);
+      Socket connectionSocket = new Socket("localhost", 6389);
       CommunicationService commService = new CommunicationService(connectionSocket);
       commService.start();
       Scanner scanner = new Scanner(System.in);
 
 
       BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-      Pair p=getRandomFreePosition();
+      //Pair p=getRandomFreePosition();
       System.out.println("Indtast spillernavn");
       String navn = inFromUser.readLine();
-      Player me = new Player(navn,p,"up");
+      //Player me = new Player(navn,null,"up");
 
 
 
@@ -39,7 +39,7 @@ public class Client {
           running = false;
         } else {
           commService.sendMessage(input);
-          commService.sendPlayer(me);
+          //commService.sendPlayer(me);
         }
       }
     } catch (IOException e) {

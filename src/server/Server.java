@@ -16,7 +16,7 @@ public class Server {
 
   public Server() {
     try {
-      serverSocket = new ServerSocket(6789);
+      serverSocket = new ServerSocket(6389);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -37,6 +37,10 @@ public class Server {
     }
   }
 
+  public void addPlayers(Player player) {
+    players.add(player);
+  }
+
   public ServerSocket getSocket() {
     return serverSocket;
   }
@@ -45,7 +49,6 @@ public class Server {
     CommunicationService commService = new CommunicationService(this, connectionSocket);
     commService.start();
     connections.add(commService);
-    //players.add()
     System.out.println("Client connected");
   }
 

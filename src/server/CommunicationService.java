@@ -1,10 +1,15 @@
 package server;
 
+import client.Pair;
+import client.Player;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+
+import static client.GameLogic.getRandomFreePosition;
 
 public class CommunicationService extends Thread {
 
@@ -26,9 +31,14 @@ public class CommunicationService extends Thread {
   }
 
   public void run() {
+    Pair p=getRandomFreePosition();
+    Player player = new Player(null,p,"up");
+
     while (running) {
       try {
         String fromClient = inFromClient.readLine();
+        player.setName(fromClient);
+        server.addPlayers(player);
         System.out.println(fromClient);
         outToClient.writeBytes("Recieved message.\n");
       } catch (IOException e) {
