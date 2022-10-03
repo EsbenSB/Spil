@@ -23,6 +23,32 @@ public class Gui extends Application {
 	public static Image hero_shield_up, hero_shield_down, hero_shield_right, hero_shield_left;
 	public static Image hero_blood_up, hero_blood_down, hero_blood_right, hero_blood_left;
 
+	// nye sprites
+
+	// player 1 gul
+
+	public static Image hero1_right,hero1_left,hero1_up,hero1_down;
+	public static Image hero1_shield_up, hero1_shield_down, hero1_shield_right, hero1_shield_left;
+
+	// player 2 blå
+
+	public static Image hero2_right,hero2_left,hero2_up,hero2_down;
+	public static Image hero2_shield_up, hero2_shield_down, hero2_shield_right, hero2_shield_left;
+
+
+	// player 3 rød
+
+	public static Image hero3_right,hero3_left,hero3_up,hero3_down;
+	public static Image hero3_shield_up, hero3_shield_down, hero3_shield_right, hero3_shield_left;
+
+	// player 4 grøn
+
+	public static Image hero4_right,hero4_left,hero4_up,hero4_down;
+	public static Image hero4_shield_up, hero4_shield_down, hero4_shield_right, hero4_shield_left;
+
+
+
+
 	
 
 	private static Label[][] fields;
@@ -59,7 +85,9 @@ public class Gui extends Application {
 			GridPane boardGrid = new GridPane();
 
 
-			//---- SPRITES ----
+			// --- Whole lotta SPRITES ---
+
+
 			image_wall  = new Image(getClass().getResourceAsStream("../images/0_1.jpeg"),size,size,false,false);
 			image_floor = new Image(getClass().getResourceAsStream("../images/-1.jpeg"),size,size,false,false);
 
@@ -79,6 +107,56 @@ public class Gui extends Application {
 			hero_blood_down = new Image(getClass().getResourceAsStream("../images/1_0_1_6_0.jpeg"),size,size,false,false);
 			hero_blood_right = new Image(getClass().getResourceAsStream("../images/1_1_0_6_0.jpeg"),size,size,false,false);
 			hero_blood_left = new Image(getClass().getResourceAsStream("../images/1_-1_0_6_0.jpeg"),size,size,false,false);
+
+
+
+			// ------- NYE SPRITES -------
+
+			// player 1
+			hero1_right = new Image(getClass().getResourceAsStream("../images/hero1_right.jpg"),size,size,false,false);
+			hero1_left = new Image(getClass().getResourceAsStream("../images/hero1_left.jpg"),size,size,false,false);
+			hero1_up = new Image(getClass().getResourceAsStream("../images/hero1_up.jpg"),size,size,false,false);
+			hero1_down = new Image(getClass().getResourceAsStream("../images/hero1_down.jpg"),size,size,false,false);
+
+			hero1_shield_up = new Image(getClass().getResourceAsStream("../images/hero1_up_shield.jpg"),size,size,false,false);
+			hero1_shield_down   = new Image(getClass().getResourceAsStream("../images/hero1_down_shield.jpg"),size,size,false,false);
+			hero1_shield_right   = new Image(getClass().getResourceAsStream("../images/hero1_right_shield.jpg"),size,size,false,false);
+			hero1_shield_left   = new Image(getClass().getResourceAsStream("../images/hero1_left_shield.jpg"),size,size,false,false);
+
+			// player 2
+			hero2_right = new Image(getClass().getResourceAsStream("../images/hero2_right.jpg"),size,size,false,false);
+			hero2_left = new Image(getClass().getResourceAsStream("../images/hero2_left.jpg"),size,size,false,false);
+			hero2_up = new Image(getClass().getResourceAsStream("../images/hero2_up.jpg"),size,size,false,false);
+			hero2_down = new Image(getClass().getResourceAsStream("../images/hero2_down.jpg"),size,size,false,false);
+
+			hero2_shield_up = new Image(getClass().getResourceAsStream("../images/hero2_up_shield.jpg"),size,size,false,false);
+			hero2_shield_down   = new Image(getClass().getResourceAsStream("../images/hero2_down_shield.jpg"),size,size,false,false);
+			hero2_shield_right   = new Image(getClass().getResourceAsStream("../images/hero2_right_shield.jpg"),size,size,false,false);
+			hero2_shield_left   = new Image(getClass().getResourceAsStream("../images/hero2_left_shield.jpg"),size,size,false,false);
+
+			// player 3
+			hero3_right = new Image(getClass().getResourceAsStream("../images/hero3_right.jpg"),size,size,false,false);
+			hero3_left = new Image(getClass().getResourceAsStream("../images/hero3_left.jpg"),size,size,false,false);
+			hero3_up = new Image(getClass().getResourceAsStream("../images/hero3_up.jpg"),size,size,false,false);
+			hero3_down = new Image(getClass().getResourceAsStream("../images/hero3_down.jpg"),size,size,false,false);
+
+			hero3_shield_up = new Image(getClass().getResourceAsStream("../images/hero3_up_shield.jpg"),size,size,false,false);
+			hero3_shield_down   = new Image(getClass().getResourceAsStream("../images/hero3_down_shield.jpg"),size,size,false,false);
+			hero3_shield_right   = new Image(getClass().getResourceAsStream("../images/hero3_right_shield.jpg"),size,size,false,false);
+			hero3_shield_left   = new Image(getClass().getResourceAsStream("../images/hero3_left_shield.jpg"),size,size,false,false);
+
+			// player 4
+			hero4_right = new Image(getClass().getResourceAsStream("../images/hero4_right.jpg"),size,size,false,false);
+			hero4_left = new Image(getClass().getResourceAsStream("../images/hero4_left.jpg"),size,size,false,false);
+			hero4_up = new Image(getClass().getResourceAsStream("../images/hero4_up.jpg"),size,size,false,false);
+			hero4_down = new Image(getClass().getResourceAsStream("../images/hero1_down.jpg"),size,size,false,false);
+
+			hero4_shield_up = new Image(getClass().getResourceAsStream("../images/hero4_up_shield.jpg"),size,size,false,false);
+			hero4_shield_down   = new Image(getClass().getResourceAsStream("../images/hero4_down_shield.jpg"),size,size,false,false);
+			hero4_shield_right   = new Image(getClass().getResourceAsStream("../images/hero4_right_shield.jpg"),size,size,false,false);
+			hero4_shield_left   = new Image(getClass().getResourceAsStream("../images/hero4_left_shield.jpg"),size,size,false,false);
+
+
 
 			fields = new Label[20][20];
 			for (int j=0; j<20; j++) {
