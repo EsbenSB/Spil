@@ -112,7 +112,7 @@ public class MazeGenerator {
       for (int col = 0; col < grid[0].length; col++) {
         if (grid[row][col] != -1) continue;
 
-        double percentage = .0667;
+        double percentage = .05;
         boolean isPowerup = Math.random() <= percentage;
         if (!isPowerup) continue;
 

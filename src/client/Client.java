@@ -1,30 +1,21 @@
 package client;
 
-import utils.CommunicationService;
-import utils.NetworkUser;
+import client.services.CommunicationService;
+import utils.Logger;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Scanner;
-import client.GameLogic;
 
-public class Client implements NetworkUser {
-  String id;
-  Scanner scanner = new Scanner(System.in);
-  String serverId;
-
-
-
-//Player player = new Player()
+public class Client {
+  private final CommunicationService commService;
+  private String serverID;
+  private String clientID;
 
   public Client() {
-    id = null;
     try {
       Socket connectionSocket = new Socket("localhost", 6389);
-      CommunicationService commService = new CommunicationService(this, connectionSocket);
+      commService = new CommunicationService(this, connectionSocket);
       commService.start();
 
     } catch (IOException e) {
@@ -32,37 +23,30 @@ public class Client implements NetworkUser {
     }
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  @Override
   public void processData(HashMap<String, String> data) {
-    // TODO: Process the data!!!
-    if(data.get("task").equals("init")){
-      id = data.get("client_id");
-      System.out.println("What is your name?");
-      String name = scanner.nextLine();
-      GameLogic.me.setName(name);
+    String task = data.get("task");
+
+    switch (task) {
+      case "create_server":
+        break;
+      case "join_server":
+        break;
+      case "joined_server":
+        break;
+      case "start_server":
+        break;
+      case "move":
+        break;
+      case "use":
+        break;
+      case "use_powerup":
+        break;
+      default:
+        break;
     }
-
-    if(data.get("task").equals("create_server")){
-      serverId = data.get("server_id");
-    }
-
   }
 
-  @Override
-  public void commDisconnected(CommunicationService commService) {
-    // TODO: Communication was shut down!!!
+  public void commDisconnected() {
+    Logger.warn("Server shut down...");
   }
-
-  public static void main(String[] args) {
-    Client client = new Client();
-  }
-
 }

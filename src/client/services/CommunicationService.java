@@ -1,8 +1,6 @@
-package utils;
+package client.services;
 
-import client.Pair;
-import client.Player;
-import server.Server;
+import client.Client;
 import utils.PackageService;
 
 import java.io.BufferedReader;
@@ -12,18 +10,14 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.HashMap;
 
-import static client.GameLogic.getRandomFreePosition;
-import static client.GameLogic.me;
-
 public class CommunicationService extends Thread {
-
-  private final NetworkUser networkUser;
+  private final Client client;
   private final BufferedReader in;
   private final DataOutputStream out;
   private boolean running = true;
 
-  public CommunicationService(NetworkUser networkUser, Socket connectionSocket) {
-    this.networkUser = networkUser;
+  public CommunicationService(Client client, Socket connectionSocket) {
+    this.client = client;
 
     try {
       in = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
@@ -57,21 +51,19 @@ public class CommunicationService extends Thread {
     } catch (IOException e){
       e.printStackTrace();
     }
-
   }
 
   public void listen(){
     try{
       String message = in.readLine();
       HashMap<String, String> data = PackageService.deconstructQuery(message);
-      networkUser.processData(data);
+      client.processData(data);
     } catch (IOException e) {
-      networkUser.commDisconnected(this);
+      client.commDisconnected();
       running = false;
     }
   }
   public void setRunning(boolean running) {
     this.running = running;
   }
-
 }
