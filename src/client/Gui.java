@@ -155,7 +155,7 @@ public class Gui extends Application {
 
 	public static void placeBloodyPlayerOnScreen(Pair newpos, String direction) {
 		Platform.runLater(() -> {
-			int newx = newpos.getX();
+			int newx = newpos.getX(); // Skal nok bruge den gamle pos.
 			int newy = newpos.getY();
 			if (direction.equals("right")) {
 				fields[newx][newy].setGraphic(new ImageView(hero_blood_right));
