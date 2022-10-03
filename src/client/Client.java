@@ -23,11 +23,12 @@ public class Client {
 
 
       BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-      Pair p=getRandomFreePosition();
+      // Pair p=getRandomFreePosition();
       System.out.println("Indtast spillernavn");
       String navn = inFromUser.readLine();
-      Player me = new Player(navn,p,"up");
+      // Player me = new Player(navn,p,"up");
 
+      // Torben siger vi skal lave spilleren på serveren.
 
 
       boolean running = true;
