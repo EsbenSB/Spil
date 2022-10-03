@@ -74,6 +74,15 @@ public static List<Player> players = new ArrayList<Player>();
 		
 		
 	}
+
+	public static void grabItem(int delta_x, int delta_y, int item){
+
+	}
+
+	public static void placeItem(int delta_x, int delta_y, int item){
+		int x = me.getXpos(),y = me.getYpos();
+
+	}
 	
 	public static Player getPlayerAt(int x, int y) {
 		for (Player p : players) {
