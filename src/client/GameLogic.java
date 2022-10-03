@@ -1,5 +1,8 @@
 package client;
 
+import server.components.MazeGenerator;
+import utils.PackageService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +12,7 @@ import java.util.Random;
 public class GameLogic {
 public static List<Player> players = new ArrayList<Player>();	
 	public static Player me;
+
 	
 	
 	public static void makePlayers(String name) {
@@ -76,7 +80,7 @@ public static List<Player> players = new ArrayList<Player>();
 	}
 
 	public static void grabItem(int delta_x, int delta_y, int item){
-
+		int x = me.getXpos(),y = me.getYpos();
 	}
 
 	public static void placeItem(int delta_x, int delta_y, int item){
