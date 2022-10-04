@@ -10,53 +10,21 @@ import javafx.scene.image.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.*;
+import test.javafx.MazeView;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
 
 public class Gui extends Application {
-
 	public static final int size = 30; 
 	public static final int scene_height = size * 20 + 50;
 	public static final int scene_width = size * 20 + 200;
 
-	public static Image image_floor;
-	public static Image image_wall;
-	public static Image hero_right,hero_left,hero_up,hero_down;
-	public static Image hero_shield_up, hero_shield_down, hero_shield_right, hero_shield_left;
-	public static Image hero_blood_up, hero_blood_down, hero_blood_right, hero_blood_left;
-
-	// nye sprites
-
-	// player 1 gul
-
-	public static Image hero1_right,hero1_left,hero1_up,hero1_down;
-	public static Image hero1_shield_up, hero1_shield_down, hero1_shield_right, hero1_shield_left;
-
-	// player 2 blå
-
-	public static Image hero2_right,hero2_left,hero2_up,hero2_down;
-	public static Image hero2_shield_up, hero2_shield_down, hero2_shield_right, hero2_shield_left;
-
-
-	// player 3 rød
-
-	public static Image hero3_right,hero3_left,hero3_up,hero3_down;
-	public static Image hero3_shield_up, hero3_shield_down, hero3_shield_right, hero3_shield_left;
-
-	// player 4 grøn
-
-	public static Image hero4_right,hero4_left,hero4_up,hero4_down;
-	public static Image hero4_shield_up, hero4_shield_down, hero4_shield_right, hero4_shield_left;
-
-
-
-
-	
-
+	public static HashMap<String, Image> images = new HashMap<>();
 	private static Label[][] fields;
 	private TextArea scoreList;
-	
 
-
-	
 	// -------------------------------------------
 	// | Maze: (0,0)              | Score: (1,0) |
 	// |-----------------------------------------|
@@ -67,8 +35,6 @@ public class Gui extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			
-			
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
 			grid.setVgap(10);
@@ -84,80 +50,10 @@ public class Gui extends Application {
 			
 			GridPane boardGrid = new GridPane();
 
-
 			// --- Whole lotta SPRITES ---
+			images = loadImages(size);
 
-
-			image_wall  = new Image(getClass().getResourceAsStream("../images/0_1.jpeg"),size,size,false,false);
-			image_floor = new Image(getClass().getResourceAsStream("../images/-1.jpeg"),size,size,false,false);
-
-			hero_right  = new Image(getClass().getResourceAsStream("../images/1_1_0_0_0.jpeg"),size,size,false,false);
-			hero_left   = new Image(getClass().getResourceAsStream("../images/1_-1_0_0_0.jpeg"),size,size,false,false);
-			hero_up     = new Image(getClass().getResourceAsStream("../images/1_0_-1_0_0.jpeg"),size,size,false,false);
-			hero_down   = new Image(getClass().getResourceAsStream("../images/1_0_1_0_0.jpeg"),size,size,false,false);
-
-			// hero shield sprite
-			hero_shield_up = new Image(getClass().getResourceAsStream("../images/1_0_-1_7_0.jpeg"),size,size,false,false);
-			hero_shield_down   = new Image(getClass().getResourceAsStream("../images/1_0_1_7_0.jpeg"),size,size,false,false);
-			hero_shield_right   = new Image(getClass().getResourceAsStream("../images/1_1_0_7_0.jpeg"),size,size,false,false);
-			hero_shield_left   = new Image(getClass().getResourceAsStream("../images/1_-1_0_7_0.jpeg"),size,size,false,false);
-
-			// hero blood sprite
-			hero_blood_up = new Image(getClass().getResourceAsStream("../images/1_0_-1_6_0.jpeg"),size,size,false,false);
-			hero_blood_down = new Image(getClass().getResourceAsStream("../images/1_0_1_6_0.jpeg"),size,size,false,false);
-			hero_blood_right = new Image(getClass().getResourceAsStream("../images/1_1_0_6_0.jpeg"),size,size,false,false);
-			hero_blood_left = new Image(getClass().getResourceAsStream("../images/1_-1_0_6_0.jpeg"),size,size,false,false);
-
-
-
-			// ------- NYE SPRITES -------
-
-			// player 1
-			hero1_right = new Image(getClass().getResourceAsStream("../images/hero1_right.jpg"),size,size,false,false);
-			hero1_left = new Image(getClass().getResourceAsStream("../images/hero1_left.jpg"),size,size,false,false);
-			hero1_up = new Image(getClass().getResourceAsStream("../images/hero1_up.jpg"),size,size,false,false);
-			hero1_down = new Image(getClass().getResourceAsStream("../images/hero1_down.jpg"),size,size,false,false);
-
-			hero1_shield_up = new Image(getClass().getResourceAsStream("../images/hero1_shield_up.jpg"),size,size,false,false);
-			hero1_shield_down   = new Image(getClass().getResourceAsStream("../images/hero1_down_shield.jpg"),size,size,false,false);
-			hero1_shield_right   = new Image(getClass().getResourceAsStream("../images/hero1_right_shield.jpg"),size,size,false,false);
-			hero1_shield_left   = new Image(getClass().getResourceAsStream("../images/hero1_left_shield.jpg"),size,size,false,false);
-
-			// player 2
-			hero2_right = new Image(getClass().getResourceAsStream("../images/hero2_right.jpg"),size,size,false,false);
-			hero2_left = new Image(getClass().getResourceAsStream("../images/hero2_left.jpg"),size,size,false,false);
-			hero2_up = new Image(getClass().getResourceAsStream("../images/hero2_up.jpg"),size,size,false,false);
-			hero2_down = new Image(getClass().getResourceAsStream("../images/hero2_down.jpg"),size,size,false,false);
-
-			hero2_shield_up = new Image(getClass().getResourceAsStream("../images/hero2_up_shield.jpg"),size,size,false,false);
-			hero2_shield_down   = new Image(getClass().getResourceAsStream("../images/hero2_down_shield.jpg"),size,size,false,false);
-			hero2_shield_right   = new Image(getClass().getResourceAsStream("../images/hero2_right_shield.jpg"),size,size,false,false);
-			hero2_shield_left   = new Image(getClass().getResourceAsStream("../images/hero2_left_shield.jpg"),size,size,false,false);
-
-			// player 3
-			hero3_right = new Image(getClass().getResourceAsStream("../images/hero3_right.jpg"),size,size,false,false);
-			hero3_left = new Image(getClass().getResourceAsStream("../images/hero3_left.jpg"),size,size,false,false);
-			hero3_up = new Image(getClass().getResourceAsStream("../images/hero3_up.jpg"),size,size,false,false);
-			hero3_down = new Image(getClass().getResourceAsStream("../images/hero3_down.jpg"),size,size,false,false);
-
-			hero3_shield_up = new Image(getClass().getResourceAsStream("../images/hero3_up_shield.jpg"),size,size,false,false);
-			hero3_shield_down   = new Image(getClass().getResourceAsStream("../images/hero3_down_shield.jpg"),size,size,false,false);
-			hero3_shield_right   = new Image(getClass().getResourceAsStream("../images/hero3_right_shield.jpg"),size,size,false,false);
-			hero3_shield_left   = new Image(getClass().getResourceAsStream("../images/hero3_left_shield.jpg"),size,size,false,false);
-
-			// player 4
-			hero4_right = new Image(getClass().getResourceAsStream("../images/hero4_right.jpg"),size,size,false,false);
-			hero4_left = new Image(getClass().getResourceAsStream("../images/hero4_left.jpg"),size,size,false,false);
-			hero4_up = new Image(getClass().getResourceAsStream("../images/hero4_up.jpg"),size,size,false,false);
-			hero4_down = new Image(getClass().getResourceAsStream("../images/hero1_down.jpg"),size,size,false,false);
-
-			hero4_shield_up = new Image(getClass().getResourceAsStream("../images/hero4_up_shield.jpg"),size,size,false,false);
-			hero4_shield_down   = new Image(getClass().getResourceAsStream("../images/hero4_down_shield.jpg"),size,size,false,false);
-			hero4_shield_right   = new Image(getClass().getResourceAsStream("../images/hero4_right_shield.jpg"),size,size,false,false);
-			hero4_shield_left   = new Image(getClass().getResourceAsStream("../images/hero4_left_shield.jpg"),size,size,false,false);
-
-
-
+			/*
 			fields = new Label[20][20];
 			for (int j=0; j<20; j++) {
 				for (int i=0; i<20; i++) {
@@ -173,6 +69,7 @@ public class Gui extends Application {
 					boardGrid.add(fields[i][j], i, j);
 				}
 			}
+			 */
 			scoreList.setEditable(false);
 			
 			
@@ -196,11 +93,7 @@ public class Gui extends Application {
 				default: break;
 				}
 			});
-			
-            // Putting default players on screen
-			for (int i=0;i<GameLogic.players.size();i++) {
-			  fields[GameLogic.players.get(i).getXpos()][GameLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
-			}
+
 			scoreList.setText(getScoreList());
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -208,12 +101,15 @@ public class Gui extends Application {
 	}
 	
 	public static void removePlayerOnScreen(Pair oldpos) {
+		/*
 		Platform.runLater(() -> {
 			fields[oldpos.getX()][oldpos.getY()].setGraphic(new ImageView(image_floor));
 			});
+		 */
 	}
 	
 	public static void placePlayerOnScreen(Pair newpos, String direction) {
+		/*
 		Platform.runLater(() -> {
 			int newx = newpos.getX();
 			int newy = newpos.getY();
@@ -230,9 +126,11 @@ public class Gui extends Application {
 				fields[newx][newy].setGraphic(new ImageView(hero_down));
 			};
 			});
+		 */
 	}
 
 	public static void placeBloodyPlayerOnScreen(Pair newpos, String direction) {
+		/*
 		Platform.runLater(() -> {
 			int newx = newpos.getX(); // Skal nok bruge den gamle pos.
 			int newy = newpos.getY();
@@ -249,6 +147,7 @@ public class Gui extends Application {
 				fields[newx][newy].setGraphic(new ImageView(hero_blood_down));
 			};
 		});
+		 */
 	}
 	
 	public static void movePlayerOnScreen(Pair oldpos, Pair newpos, String direction)
@@ -288,8 +187,25 @@ public class Gui extends Application {
 		return b.toString();
 	}
 
+	private static HashMap<String, Image> loadImages(double size) throws Exception {
+		HashMap<String, Image> images = new HashMap<>();
 
+		File folder = new File(System.getProperty("user.dir") + "/src/images");
+		File[] files = folder.listFiles();
 
+		if (files == null) throw new Exception("Could not load images.");
 
+		for (final File fileEntry : files) {
+			String localPath = "/images/" + fileEntry.getName();
+			if (!localPath.endsWith(".jpeg")) continue;
+
+			InputStream imageStream = MazeView.class.getResourceAsStream(localPath);
+			if (imageStream == null) continue;
+
+			images.put(fileEntry.getName(), new Image(imageStream, size, size, false, false));
+		}
+
+		return images;
+	}
 }
 

@@ -24,10 +24,11 @@ public static List<Player> players = new ArrayList<Player>();
 		players.add(harry);
 	}
 	
-	public static Pair getRandomFreePosition()
-	// finds a random new position which is not wall 
-	// and not occupied by other players 
-	{
+	public static Pair getRandomFreePosition() {
+		// finds a random new position which is not wall
+		// and not occupied by other players
+
+		/*
 		int x = 1;
 		int y = 1;
 		boolean foundfreepos = false;
@@ -47,10 +48,12 @@ public static List<Player> players = new ArrayList<Player>();
 		}
 		Pair p = new Pair(x,y);
 		return p;
+		 */
+		return null;
 	}
 	
-	public static void updatePlayer(int delta_x, int delta_y, String direction)
-	{
+	public static void updatePlayer(int delta_x, int delta_y, String direction) {
+		/*
 		me.direction = direction;
 		int x = me.getXpos(),y = me.getYpos();
 
@@ -75,8 +78,7 @@ public static List<Player> players = new ArrayList<Player>();
 			Gui.movePlayerOnScreen(oldpos,newpos,direction);
 			me.setLocation(newpos);
 		}
-		
-		
+		 */
 	}
 
 	public static void grabItem(int delta_x, int delta_y, int item){
