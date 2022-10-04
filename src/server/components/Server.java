@@ -2,18 +2,18 @@ package server.components;
 
 import server.services.CommunicationService;
 import utils.Config;
+import utils.ErrorCode;
 import utils.Logger;
+import utils.PackageService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Server {
+public class Server implements ServerInterface {
   private ServerSocket serverSocket;
   private final HashMap<String, GameServer> gameServers = new HashMap<>();
-  private final ArrayList<CommunicationService> connections = new ArrayList<>();
   private boolean running = true;
 
   public void start() {
@@ -60,54 +60,68 @@ public class Server {
     CommunicationService commService = new CommunicationService(this, connectionSocket);
     commService.start();
 
-    Logger.info("%s connected", connectionSocket.getRemoteSocketAddress());
+    Logger.info("%s connected", commService);
   }
 
+  @Override
   public void processData(CommunicationService commService, HashMap<String, String> data) {
     String task = data.get("task");
+    String clientName = data.get("client_name");
+    String serverName = data.get("server_name");
+    HashMap<String, String> returnData = new HashMap<>();
+    returnData.put("task", task);
 
     switch (task) {
       case "create_server":
-        // Tjek om server_name er ledigt,
-        // hvis ja, så opret en GameServer og player,
-        // sæt comm servicens serverID og clientID,
-        // send pakke tilbage med client_id og server_id,
-        // hvis nej, så send pakke tilbage med client_id=null og server_id=null
+        if (gameServers.get(serverName) == null) {
+          GameServer gameServer = createGameServer(serverName);
+          commService.setClientName(clientName);
+          commService.setClientID("0");
+          transferCommService(commService, gameServer);
+
+          returnData.put("client_id", commService.getClientID());
+        } else {
+          returnData.put("task", "error");
+          returnData.put("code", ErrorCode.NOT_AVAILABLE);
+        }
         break;
       case "join_server":
-        // Tjek om game server med server_name findes,
-        // hvis ja, så opret player og sæt comm servicens serverID og clientID
-        // send pakke tilbage med server_id og client_id
-        // derefter send til alle clients i game serveren task=joined_server
-        // hvis nej, så send pakke tilabe med client_id=null og server_id=null
-        break;
-      case "start_server":
-        // Tjek om client_id er admin af serveren med server_id
-        // hvis ja, så generere maze og
-        break;
-      case "move":
-        break;
-      case "use":
-        break;
-      case "use_powerup":
-        break;
-      default:
-        break;
+        GameServer gameServer = gameServers.get(serverName);
+        if (gameServer != null) {
+          commService.setClientName(clientName);
+          commService.setClientID(gameServer.getNextClientID());
+          transferCommService(commService, gameServer);
+
+          returnData = PackageService.constructClientsData(commService.getClientID(), gameServer.getConnections());
+        } else {
+          returnData.put("task", "error");
+          returnData.put("code", ErrorCode.NOT_FOUND);
+        }
     }
+
+    commService.sendData(returnData);
   }
 
+  @Override
   public void commDisconnected(CommunicationService commService) {
-    connections.remove(commService);
-    Logger.info("Connection to %s cut off...", commService.getAddress());
+    Logger.info("Connection to %s cut off...", commService);
   }
 
-  private boolean gameServerExists(String name) {
-    for (GameServer gameServer : gameServers.values()) {
-      if (gameServer.getName().equals(name)) {
-        return true;
-      }
-    }
+  private GameServer createGameServer(String name) {
+    GameServer gameServer = new GameServer(this, name);
+    gameServers.put(name, gameServer);
+    Logger.info("Created game server %s with id %s", name, gameServer.getServerID());
+    return gameServer;
+  }
 
-    return false;
+  public void removeGameServer(GameServer gameServer) {
+    gameServers.remove(gameServer.getName());
+
+    Logger.info("Shutdown game server %s with id %s", gameServer.getName(), gameServer.getServerID());
+  }
+
+  private void transferCommService(CommunicationService commService, GameServer gameServer) {
+    gameServer.addConnection(commService);
+    commService.setServer(gameServer);
   }
 }

@@ -1,11 +1,13 @@
 package utils;
 
+import server.services.CommunicationService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class PackageService {
-  public static HashMap<String, String> constructGridMap(int[][] grid) {
+  public static HashMap<String, String> constructGridData(int[][] grid) {
     String[][] stringMaze = new String[grid.length][grid[0].length];
 
     for (int row = 0; row < grid.length; row++) {
@@ -31,10 +33,10 @@ public abstract class PackageService {
     return gridData;
   }
 
-  public static int[][] deconstructGridMap(HashMap<String, String> data) {
-    int width = Integer.parseInt(data.get("width"));
-    int height = Integer.parseInt(data.get("height"));
-    String gridString = data.get("grid");
+  public static int[][] deconstructGridData(HashMap<String, String> gridData) {
+    int width = Integer.parseInt(gridData.get("width"));
+    int height = Integer.parseInt(gridData.get("height"));
+    String gridString = gridData.get("grid");
     int[][] grid = new int[height][width];
     String[] rowSplit = gridString.split(":");
 
@@ -47,6 +49,40 @@ public abstract class PackageService {
     }
 
     return grid;
+  }
+
+  public static HashMap<String, String> constructClientsData(String clientID, ArrayList<CommunicationService> clients) {
+    StringBuilder sb = new StringBuilder();
+    ArrayList<String> clientStrings = new ArrayList<>();
+    for (CommunicationService client : clients) {
+      clientStrings.add(String.format("%s,%s", client.getClientID(), client.getClientName()));
+    }
+    sb.append(String.join(":", clientStrings));
+
+    HashMap<String, String> data = new HashMap<>();
+    data.put("task", "join_server");
+    data.put("client_id", clientID);
+    data.put("clients", sb.toString());
+
+    return data;
+  }
+
+  public static ArrayList<HashMap<String, String>> deconstructClientsString(String clientsString) {
+    ArrayList<HashMap<String, String>> clients = new ArrayList<>();
+    String[] clientParts = clientsString.split(":");
+
+    for (String clientPart : clientParts) {
+      String[] clientSplit = clientPart.split(",");
+      String clientID  = clientSplit[0];
+      String clientName = clientSplit[1];
+
+      HashMap<String, String> client = new HashMap<>();
+      client.put("client_id", clientID);
+      client.put("client_name", clientName);
+      clients.add(client);
+    }
+
+    return clients;
   }
 
   public static String constructQuery(HashMap<String, String> data) {

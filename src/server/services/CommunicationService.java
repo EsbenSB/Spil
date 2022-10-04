@@ -1,6 +1,7 @@
 package server.services;
 
-import server.components.Server;
+import server.components.ServerInterface;
+import utils.Logger;
 import utils.PackageService;
 
 import java.io.BufferedReader;
@@ -11,15 +12,15 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class CommunicationService extends Thread {
-  private final Server server;
+  private ServerInterface server;
   private final String address;
-  private String serverID;
-  private String clientID;
+  private String clientName = "";
+  private String clientID = "";
   private final BufferedReader in;
   private final DataOutputStream out;
   private boolean running = true;
 
-  public CommunicationService(Server server, Socket connectionSocket) {
+  public CommunicationService(ServerInterface server, Socket connectionSocket) {
     this.server = server;
     this.address = connectionSocket.getRemoteSocketAddress().toString();
 
@@ -35,11 +36,12 @@ public class CommunicationService extends Thread {
     while (running) {
       listen();
     }
-
-    close();
   }
 
   public void close() {
+    running = false;
+    server.commDisconnected(this);
+
     try {
       in.close();
       out.close();
@@ -50,8 +52,10 @@ public class CommunicationService extends Thread {
 
   public void sendData(HashMap<String, String> data) {
     try{
-      String message = PackageService.constructQuery(data);
-      out.writeBytes(message + "\n");
+      String query = PackageService.constructQuery(data);
+      out.writeBytes(query + "\n");
+
+      Logger.info("Sent query %s to %s", query, this);
     } catch (IOException e){
       e.printStackTrace();
     }
@@ -59,24 +63,33 @@ public class CommunicationService extends Thread {
 
   public void listen(){
     try{
-      String message = in.readLine();
-      HashMap<String, String> data = PackageService.deconstructQuery(message);
+      String query = in.readLine();
+
+      if (query == null) {
+        throw new IOException();
+      }
+
+      Logger.info("Received query %s from %s", query, this);
+
+      HashMap<String, String> data = PackageService.deconstructQuery(query);
       server.processData(this, data);
+
+
     } catch (IOException e) {
-      server.commDisconnected(this);
-      running = false;
+      close();
     }
   }
-  public void setRunning(boolean running) {
-    this.running = running;
+
+  public void setServer(ServerInterface server) {
+    this.server = server;
   }
 
-  public String getServerID() {
-    return serverID;
+  public String getClientName() {
+    return clientName;
   }
 
-  public void setServerID(String serverID) {
-    this.serverID = serverID;
+  public void setClientName(String clientName) {
+    this.clientName = clientName;
   }
 
   public String getClientID() {
@@ -87,7 +100,8 @@ public class CommunicationService extends Thread {
     this.clientID = clientID;
   }
 
-  public String getAddress() {
-    return address;
+  @Override
+  public String toString() {
+    return clientName.isBlank() ? address : clientName;
   }
 }
