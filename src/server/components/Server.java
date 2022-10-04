@@ -4,6 +4,7 @@ import server.services.CommunicationService;
 import utils.Config;
 import utils.ErrorCode;
 import utils.Logger;
+import utils.PackageService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -72,28 +73,30 @@ public class Server implements ServerInterface {
 
     switch (task) {
       case "create_server":
-        if (getGameServerByName(serverName) == null) {
+        if (gameServers.get(serverName) == null) {
           GameServer gameServer = createGameServer(serverName);
           commService.setClientName(clientName);
           commService.setClientID("0");
           transferCommService(commService, gameServer);
 
           returnData.put("client_id", commService.getClientID());
-          break;
+        } else {
+          returnData.put("task", "error");
+          returnData.put("code", ErrorCode.NOT_AVAILABLE);
         }
+        break;
       case "join_server":
-        GameServer gameServer = getGameServerByName(serverName);
+        GameServer gameServer = gameServers.get(serverName);
         if (gameServer != null) {
           commService.setClientName(clientName);
           commService.setClientID(gameServer.getNextClientID());
           transferCommService(commService, gameServer);
 
-          returnData.put("client_id", commService.getClientID());
-          break;
+          returnData = PackageService.constructClientsData(commService.getClientID(), gameServer.getConnections());
+        } else {
+          returnData.put("task", "error");
+          returnData.put("code", ErrorCode.NOT_FOUND);
         }
-      default:
-        returnData.put("task", "error");
-        returnData.put("code", ErrorCode.NOT_FOUND);
     }
 
     commService.sendData(returnData);
@@ -104,24 +107,15 @@ public class Server implements ServerInterface {
     Logger.info("Connection to %s cut off...", commService);
   }
 
-  private GameServer getGameServerByName(String name) {
-    for (GameServer gameServer : gameServers.values()) {
-      if (gameServer.getName().equals(name)) {
-        return gameServer;
-      }
-    }
-
-    return null;
-  }
-
   private GameServer createGameServer(String name) {
     GameServer gameServer = new GameServer(this, name);
+    gameServers.put(name, gameServer);
     Logger.info("Created game server %s with id %s", name, gameServer.getServerID());
     return gameServer;
   }
 
   public void removeGameServer(GameServer gameServer) {
-    gameServers.remove(gameServer.getServerID());
+    gameServers.remove(gameServer.getName());
 
     Logger.info("Shutdown game server %s with id %s", gameServer.getName(), gameServer.getServerID());
   }

@@ -1,5 +1,7 @@
 package utils;
 
+import server.services.CommunicationService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +49,40 @@ public abstract class PackageService {
     }
 
     return grid;
+  }
+
+  public static HashMap<String, String> constructClientsData(String clientID, ArrayList<CommunicationService> clients) {
+    StringBuilder sb = new StringBuilder();
+    ArrayList<String> clientStrings = new ArrayList<>();
+    for (CommunicationService client : clients) {
+      clientStrings.add(String.format("%s,%s", client.getClientID(), client.getClientName()));
+    }
+    sb.append(String.join(":", clientStrings));
+
+    HashMap<String, String> data = new HashMap<>();
+    data.put("task", "join_server");
+    data.put("client_id", clientID);
+    data.put("clients", sb.toString());
+
+    return data;
+  }
+
+  public static ArrayList<HashMap<String, String>> deconstructClientsString(String clientsString) {
+    ArrayList<HashMap<String, String>> clients = new ArrayList<>();
+    String[] clientParts = clientsString.split(":");
+
+    for (String clientPart : clientParts) {
+      String[] clientSplit = clientPart.split(",");
+      String clientID  = clientSplit[0];
+      String clientName = clientSplit[1];
+
+      HashMap<String, String> client = new HashMap<>();
+      client.put("client_id", clientID);
+      client.put("client_name", clientName);
+      clients.add(client);
+    }
+
+    return clients;
   }
 
   public static String constructQuery(HashMap<String, String> data) {

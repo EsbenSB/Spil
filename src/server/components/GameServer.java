@@ -50,15 +50,12 @@ public class GameServer implements ServerInterface {
         break;
       case "use_powerup":
         break;
-      default:
-        break;
     }
   }
 
   @Override
   public void commDisconnected(CommunicationService commService) {
     removeConnection(commService);
-    Logger.info("%s disconnected from game server %s with id %s", commService, name, serverID);
   }
 
   private void broadcastData(HashMap<String, String> data, CommunicationService sender) {
@@ -69,12 +66,17 @@ public class GameServer implements ServerInterface {
     }
   }
 
+  public ArrayList<CommunicationService> getConnections() {
+    return new ArrayList<>(connections);
+  }
+
   public void addConnection(CommunicationService commService) {
     connections.add(commService);
 
     HashMap<String, String> data = new HashMap<>();
     data.put("task", "joined_server");
     data.put("client_id", commService.getClientID());
+    data.put("client_name", commService.getClientName());
     broadcastData(data, commService);
 
     Logger.info("%s joined game server %s with id %s", commService, name, serverID);
@@ -82,13 +84,12 @@ public class GameServer implements ServerInterface {
 
   public void removeConnection(CommunicationService commService) {
     connections.remove(commService);
+    Logger.info("%s left game server %s with id %s", commService, name, serverID);
 
     HashMap<String, String> data = new HashMap<>();
     data.put("task", "left_server");
     data.put("client_id", commService.getClientID());
     broadcastData(data, commService);
-
-    Logger.info("%s left game server %s with id %s", commService, name, serverID);
 
     if (connections.isEmpty()) {
       parentServer.removeGameServer(this);

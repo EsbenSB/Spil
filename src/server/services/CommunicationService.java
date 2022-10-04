@@ -14,8 +14,8 @@ import java.util.HashMap;
 public class CommunicationService extends Thread {
   private ServerInterface server;
   private final String address;
-  private String clientName;
-  private String clientID;
+  private String clientName = "";
+  private String clientID = "";
   private final BufferedReader in;
   private final DataOutputStream out;
   private boolean running = true;
@@ -36,11 +36,12 @@ public class CommunicationService extends Thread {
     while (running) {
       listen();
     }
-
-    close();
   }
 
   public void close() {
+    running = false;
+    server.commDisconnected(this);
+
     try {
       in.close();
       out.close();
@@ -63,18 +64,20 @@ public class CommunicationService extends Thread {
   public void listen(){
     try{
       String query = in.readLine();
+
+      if (query == null) {
+        throw new IOException();
+      }
+
+      Logger.info("Received query %s from %s", query, this);
+
       HashMap<String, String> data = PackageService.deconstructQuery(query);
       server.processData(this, data);
 
-      Logger.info("Received query %s from %s", query, this);
-    } catch (IOException e) {
-      server.commDisconnected(this);
-      running = false;
-    }
-  }
 
-  public void setRunning(boolean running) {
-    this.running = running;
+    } catch (IOException e) {
+      close();
+    }
   }
 
   public void setServer(ServerInterface server) {
@@ -97,12 +100,8 @@ public class CommunicationService extends Thread {
     this.clientID = clientID;
   }
 
-  public String getAddress() {
-    return address;
-  }
-
   @Override
   public String toString() {
-    return clientName.isBlank() ? address : clientID;
+    return clientName.isBlank() ? address : clientName;
   }
 }
