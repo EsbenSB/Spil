@@ -98,20 +98,70 @@ public static List<Player> players = new ArrayList<Player>();
 		me.setLocation(newLoc);
 		Pair newDir = new Pair(x,y);
 		me.setDirection(newDir);
-		
-		if(newLoc != )
 
+		checkCell();
+
+	}
+
+	public static void checkCell(){
 		/* pseudo
+
+		Eventuelt laver vi klasse til powerups, og checker at det IKKE er floor eller en wall.
+		Hvis det er en cell med en powerup-værdi, tager vi værdien af cellen og giver den tilsvarende powerup.
+
 		for(maze.cell){
-			if (gamelogic.maze.cell(newLoc.value)) == 7(shield){
+			if (maze.cell.value == 0(wall)){
+				Error: "Cant move here, this is a wall".
+			}
+
+			else if(maze.cell.value == 1(player)){
+
+			}
+			else if(maze.cell.value == 2(trap)){
+
+			}
+			else if(maze.cell.value == 3(super star)){
+
+			}
+			else if(maze.cell.value == 4(pickaxe)){
+
+			}
+
+			else if(maze.cell.value == 5(Speed boost)){
+
+			}
+
+			else if(maze.cell.value == 6(gun)){
+
+			}
+
+			else if (gamelogic.maze.cell(newLoc.value)) == 7(shield){
 				pickUpShield(me.getPlayerID);
 				}
-			else if(maze.cell)
+
+			else if(maze.cell.value == 8(demon)){
+
+			}
+
+			else if(maze.cell.value == 9(bomb)){
+
+			}
+
+			else if(maze.cell.value == 10(skud)){
+
+			}
+
+			else if(maze.cell.value == 11(eksplosion)){
+
+			}
+
+			else if(maze.cell.value == 12(AKtiv trap)){
+
+			}
 		}
 
 
 		 */
-
 	}
 
 	public static void pickUpShield(Player player){
