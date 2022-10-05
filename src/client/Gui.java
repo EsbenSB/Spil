@@ -10,25 +10,21 @@ import javafx.scene.image.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.*;
+import test.javafx.MazeView;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
 
 public class Gui extends Application {
-
 	public static final int size = 30; 
 	public static final int scene_height = size * 20 + 50;
 	public static final int scene_width = size * 20 + 200;
 
-	public static Image image_floor;
-	public static Image image_wall;
-	public static Image hero_right,hero_left,hero_up,hero_down;
-
-	
-
+	public static HashMap<String, Image> images = new HashMap<>();
 	private static Label[][] fields;
 	private TextArea scoreList;
-	
 
-
-	
 	// -------------------------------------------
 	// | Maze: (0,0)              | Score: (1,0) |
 	// |-----------------------------------------|
@@ -39,8 +35,6 @@ public class Gui extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			
-			
 			GridPane grid = new GridPane();
 			grid.setHgap(10);
 			grid.setVgap(10);
@@ -56,14 +50,10 @@ public class Gui extends Application {
 			
 			GridPane boardGrid = new GridPane();
 
-			image_wall  = new Image(getClass().getResourceAsStream("../images/wall4.png"),size,size,false,false);
-			image_floor = new Image(getClass().getResourceAsStream("../images/floor1.png"),size,size,false,false);
+			// --- Whole lotta SPRITES ---
+			images = loadImages(size);
 
-			hero_right  = new Image(getClass().getResourceAsStream("../images/heroRight.png"),size,size,false,false);
-			hero_left   = new Image(getClass().getResourceAsStream("../images/heroLeft.png"),size,size,false,false);
-			hero_up     = new Image(getClass().getResourceAsStream("../images/heroUp.png"),size,size,false,false);
-			hero_down   = new Image(getClass().getResourceAsStream("../images/heroDown.png"),size,size,false,false);
-
+			/*
 			fields = new Label[20][20];
 			for (int j=0; j<20; j++) {
 				for (int i=0; i<20; i++) {
@@ -79,11 +69,12 @@ public class Gui extends Application {
 					boardGrid.add(fields[i][j], i, j);
 				}
 			}
+			 */
 			scoreList.setEditable(false);
 			
 			
-			grid.add(mazeLabel,  0, 0); 
-			grid.add(scoreLabel, 1, 0); 
+			grid.add(mazeLabel,  0, 0);
+			grid.add(scoreLabel, 1, 0);
 			grid.add(boardGrid,  0, 1);
 			grid.add(scoreList,  1, 1);
 						
@@ -97,15 +88,12 @@ public class Gui extends Application {
 				case DOWN:  playerMoved(0,+1,"down");  break;
 				case LEFT:  playerMoved(-1,0,"left");  break;
 				case RIGHT: playerMoved(+1,0,"right"); break;
-				case ESCAPE:System.exit(0); 
+				case ESCAPE:System.exit(0);
+					case SPACE:
 				default: break;
 				}
 			});
-			
-            // Putting default players on screen
-			for (int i=0;i<GameLogic.players.size();i++) {
-			  fields[GameLogic.players.get(i).getXpos()][GameLogic.players.get(i).getYpos()].setGraphic(new ImageView(hero_up));
-			}
+
 			scoreList.setText(getScoreList());
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -113,12 +101,15 @@ public class Gui extends Application {
 	}
 	
 	public static void removePlayerOnScreen(Pair oldpos) {
+		/*
 		Platform.runLater(() -> {
 			fields[oldpos.getX()][oldpos.getY()].setGraphic(new ImageView(image_floor));
 			});
+		 */
 	}
 	
 	public static void placePlayerOnScreen(Pair newpos, String direction) {
+		/*
 		Platform.runLater(() -> {
 			int newx = newpos.getX();
 			int newy = newpos.getY();
@@ -135,6 +126,28 @@ public class Gui extends Application {
 				fields[newx][newy].setGraphic(new ImageView(hero_down));
 			};
 			});
+		 */
+	}
+
+	public static void placeBloodyPlayerOnScreen(Pair newpos, String direction) {
+		/*
+		Platform.runLater(() -> {
+			int newx = newpos.getX(); // Skal nok bruge den gamle pos.
+			int newy = newpos.getY();
+			if (direction.equals("right")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_right));
+			};
+			if (direction.equals("left")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_left));
+			};
+			if (direction.equals("up")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_up));
+			};
+			if (direction.equals("down")) {
+				fields[newx][newy].setGraphic(new ImageView(hero_blood_down));
+			};
+		});
+		 */
 	}
 	
 	public static void movePlayerOnScreen(Pair oldpos, Pair newpos, String direction)
@@ -155,6 +168,16 @@ public class Gui extends Application {
 		GameLogic.updatePlayer(delta_x,delta_y,direction);
 		updateScoreTable();
 	}
+
+	public void findItem(int delta_x, int delta_y, int item){
+		GameLogic.grabItem(delta_x,delta_y,item);
+
+		//if(Pair  )
+	}
+
+	public void useItem(int delta_x, int delta_y, int item){
+	GameLogic.placeItem(delta_x,delta_y,item);
+	}
 	
 	public String getScoreList() {
 		StringBuffer b = new StringBuffer(100);
@@ -162,6 +185,27 @@ public class Gui extends Application {
 			b.append(p+"\r\n");
 		}
 		return b.toString();
+	}
+
+	private static HashMap<String, Image> loadImages(double size) throws Exception {
+		HashMap<String, Image> images = new HashMap<>();
+
+		File folder = new File(System.getProperty("user.dir") + "/src/images");
+		File[] files = folder.listFiles();
+
+		if (files == null) throw new Exception("Could not load images.");
+
+		for (final File fileEntry : files) {
+			String localPath = "/images/" + fileEntry.getName();
+			if (!localPath.endsWith(".jpeg")) continue;
+
+			InputStream imageStream = MazeView.class.getResourceAsStream(localPath);
+			if (imageStream == null) continue;
+
+			images.put(fileEntry.getName(), new Image(imageStream, size, size, false, false));
+		}
+
+		return images;
 	}
 }
 
