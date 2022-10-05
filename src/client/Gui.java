@@ -83,11 +83,12 @@ public class Gui extends Application {
 			primaryStage.show();
 
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+
 				switch (event.getCode()) {
-				case UP:    playerMoved(0,-1,"up");    break;
-				case DOWN:  playerMoved(0,+1,"down");  break;
-				case LEFT:  playerMoved(-1,0,"left");  break;
-				case RIGHT: playerMoved(+1,0,"right"); break;
+				case UP:    playerMoved(0,-1);    break;
+				case DOWN:  playerMoved(0,1);  break;
+				case LEFT:  playerMoved(-1,0);  break;
+				case RIGHT: playerMoved(+1,0); break;
 				case ESCAPE:System.exit(0);
 					case SPACE:
 				default: break;
@@ -108,7 +109,7 @@ public class Gui extends Application {
 		 */
 	}
 	
-	public static void placePlayerOnScreen(Pair newpos, String direction) {
+	public static void placePlayerOnScreen(Pair newpos, Pair direction) {
 		/*
 		Platform.runLater(() -> {
 			int newx = newpos.getX();
@@ -150,7 +151,7 @@ public class Gui extends Application {
 		 */
 	}
 	
-	public static void movePlayerOnScreen(Pair oldpos, Pair newpos, String direction)
+	public static void movePlayerOnScreen(Pair oldpos, Pair newpos, Pair direction)
 	{
 		removePlayerOnScreen(oldpos);
 		placePlayerOnScreen(newpos,direction);
@@ -164,8 +165,8 @@ public class Gui extends Application {
 			scoreList.setText(getScoreList());
 			});
 	}
-	public void playerMoved(int delta_x, int delta_y, String direction) {
-		GameLogic.updatePlayer(delta_x,delta_y,direction);
+	public void playerMoved(int x, int y) {
+		GameLogic.move(x,y);
 		updateScoreTable();
 	}
 

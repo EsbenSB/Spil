@@ -82,27 +82,38 @@ public static List<Player> players = new ArrayList<Player>();
 	}
 
 	public static void grabItem(int delta_x, int delta_y, int item){
-		int x = me.getXpos(),y = me.getYpos();
-	}
+
+	};
 
 	public static void placeItem(int delta_x, int delta_y, int item){
-		int x = me.getXpos(),y = me.getYpos();
 
-	}
 
-	public static void move(Pair newPos){
+	};
+
+	public static void move(int x, int y){
+		int z = me.getXpos();
+		int u = me.getYpos();
+
+		Pair newLoc = new Pair(z + (x),u + (y));
+		me.setLocation(newLoc);
+		Pair newDir = new Pair(x,y);
+		me.setDirection(newDir);
+		
+		if(newLoc != )
+
+
 
 	}
 
 	
-	public static Player getPlayerAt(int x, int y) {
+	/*public static Player getPlayerAt(int x, int y) {
 		for (Player p : players) {
 			if (p.getXpos()==x && p.getYpos()==y) {
 				return p;
 			}
 		}
 		return null;
-	}
+	}*/
 	
 	
 	
