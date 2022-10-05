@@ -85,8 +85,8 @@ public static List<Player> players = new ArrayList<Player>();
 
 	};
 
-	public static void placeItem(int delta_x, int delta_y, int item){
-
+	public static void placeItem(){
+	
 
 	};
 
