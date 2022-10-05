@@ -45,6 +45,11 @@ public class GameServer implements ServerInterface {
         }
         break;
       case "move":
+        // get data fra processData
+
+        // Broadcast data
+
+
         break;
       case "use":
         break;
