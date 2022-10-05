@@ -90,7 +90,7 @@ public class Gui extends Application {
 				case LEFT:  playerMoved(-1,0);  break;
 				case RIGHT: playerMoved(+1,0); break;
 				case ESCAPE:System.exit(0);
-				case SPACE: playerPlaceItem();
+				case SPACE: playerUseItem();
 				default: break;
 				}
 			});
@@ -171,8 +171,8 @@ public class Gui extends Application {
 		updateScoreTable();
 	}
 
-	public void playerPlaceItem() {
-		GameLogic.placeItem();
+	public void playerUseItem() {
+		GameLogic.useItem();
 		updateScoreTable();
 	}
 
@@ -182,9 +182,6 @@ public class Gui extends Application {
 		//if(Pair  )
 	}
 
-	public void useItem(int delta_x, int delta_y, int item){
-	GameLogic.placeItem();
-	}
 	
 	public String getScoreList() {
 		StringBuffer b = new StringBuffer(100);

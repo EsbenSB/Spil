@@ -4,6 +4,7 @@ import server.components.MazeGenerator;
 import utils.PackageService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -81,12 +82,33 @@ public static List<Player> players = new ArrayList<Player>();
 		 */
 	}
 
+	public static HashMap<Pair, Integer> getCellLoc(Pair loc){
+		/*
+		henter en Key fra client baseret på den loc, man sætter som parameter
+		cliet.getKey(loc);
+		 */
+	}
+
 	public static void grabItem(int delta_x, int delta_y, int item){
 
 	};
 
-	public static void placeItem(){
+	public static void useItem(){
+	/* pseudo
+	Finder me's nuværende loc
+	Kalder getCellLoc med me's nuværende loc
+	Tjekker og me.item() er placeable
+	Tager den key fra clienten, som macther me's nuværende loc og opdaterer den keys value til me.getItem()
+	me.getItem() ændres til null
+	else
+	Tjekker den om me.items er ikke placeble
+	effekten af me.Item() aktiverer
+	me.getItem() ændres til null
 	
+	 Pair currentLoc = me.getLocation();
+	  getCellLoc(currenLoc).value = me.getItem();
+	  me.getItem() = 0;
+		 */
 
 	};
 
