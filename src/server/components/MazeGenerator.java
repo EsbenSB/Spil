@@ -14,9 +14,9 @@ public class MazeGenerator {
   public MazeGenerator(int x, int y) {
     this.x = x;
     this.y = y;
-    maze = new int[this.x][this.y];
+    maze = new int[x][y];
     generateMaze(0, 0, 0);
-    grid = new int[y*2 + 1][x*2 + 1];
+    grid = new int[x*2 + 1][y*2 + 1];
     generateGrid();
   }
 
@@ -76,33 +76,33 @@ public class MazeGenerator {
   private void generateGrid() {
     // CORNERS
     grid[0  ][0  ] = 0;
-    grid[y*2][0  ] = 0;
-    grid[y*2][x*2] = 0;
-    grid[0  ][x*2] = 0;
+    grid[x*2][0  ] = 0;
+    grid[x*2][y*2] = 0;
+    grid[0  ][y*2] = 0;
 
     // CELLS
     for (int row = 0; row < y; row++) {
       for (int col = 0; col < x; col++) {
         // UP
-        grid[row*2    ][col*2 + 1] = (maze[col][row] & 1) == 0 ? 0 : -1;
+        grid[col*2 + 1][row*2    ] = (maze[col][row] & 1) == 0 ? 0 : -1;
         // CENTER
-        grid[row*2 + 1][col*2 + 1] = -1;
+        grid[col*2 + 1][row*2 + 1] = -1;
         // LEFT
-        grid[row*2 + 1][col*2    ] = (maze[col][row] & 8) == 0 ? 0 : -1;
+        grid[col*2    ][row*2 + 1] = (maze[col][row] & 8) == 0 ? 0 : -1;
       }
       // MOST RIGHT WALL
-      grid[row*2 + 1][x*2] = 0;
+      grid[x*2][row*2 + 1] = 0;
     }
 
     // BOTTOM WALLS
     for (int col = 1; col < x*2; col++) {
-      grid[y*2][col] = 0;
+      grid[col][y*2] = 0;
     }
 
     // START
     grid[1][1] = -3;
     // END
-    grid[endy*2 + 1][endx*2 + 1] = -2;
+    grid[endx*2 + 1][endy*2 + 1] = -2;
 
     generatePowerups();
   }

@@ -1,6 +1,5 @@
 package test;
 
-import client.Client;
 import utils.Config;
 import utils.PackageService;
 
@@ -22,26 +21,32 @@ public class TestClient {
 
       try (Scanner scanner = new Scanner(System.in)) {
         System.out.println("Create a server with 'create', join a server with 'join' or start the server with 'start'");
+        label:
         while (true) {
           String input = scanner.nextLine();
-          if (input.equals("close")) {
-            commService.close();
-            break;
-          } else if (input.equals("create")) {
-            commService.sendQuery("task=create_server&client_name=lukas&server_name=gameServer1");
-          } else if (input.equals("join")) {
-            commService.sendQuery("task=join_server&client_name=mads&server_name=gameServer1");
-          } else if (input.equals("start")) {
-            commService.sendQuery("task=start_server");
-          } else {
-            commService.sendQuery(input);
+          switch (input) {
+            case "close":
+              commService.close();
+              break label;
+            case "create":
+              commService.sendQuery("task=create_server&client_name=lukas&server_name=gameServer1");
+              break;
+            case "join":
+              commService.sendQuery("task=join_server&client_name=mads&server_name=gameServer1");
+              break;
+            case "start":
+              commService.sendQuery("task=start_server");
+              break;
+            default:
+              commService.sendQuery(input);
+              break;
           }
         }
       }
     }
   }
 
-  private class CommunicationService extends Thread {
+  private static class CommunicationService extends Thread {
     private final DataOutputStream out;
     private final BufferedReader in;
     private boolean running = true;
