@@ -4,11 +4,11 @@ public class Player {
 	String name;
 	Pair location;
 	int point;
-	String direction;
+	Pair direction;
 	int item;
 	int condition;
 
-	public Player(String name, Pair loc, String direction) {
+	public Player(String name, Pair loc, Pair direction) {
 		this.name = name;
 		this.location = loc;
 		this.direction = direction;
@@ -37,10 +37,10 @@ public class Player {
 	public void setYpos(int ypos) {
 		this.location.y = ypos;
 	}
-	public String getDirection() {
+	public Pair getDirection() {
 		return direction;
 	}
-	public void setDirection(String direction) {
+	public void setDirection(Pair direction) {
 		this.direction = direction;
 	}
 	public void addPoints(int p) {

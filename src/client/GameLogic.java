@@ -16,12 +16,12 @@ public static List<Player> players = new ArrayList<Player>();
 	
 	
 	public static void makePlayers(String name) {
-		Pair p=getRandomFreePosition();
+		/*Pair p=getRandomFreePosition();
 		me = new Player(name,p,"up");
 		players.add(me);
 		p=getRandomFreePosition();
 		Player harry = new Player("Kaj",p,"up");
-		players.add(harry);
+		players.add(harry);*/
 	}
 	
 	public static Pair getRandomFreePosition() {
@@ -89,6 +89,12 @@ public static List<Player> players = new ArrayList<Player>();
 		int x = me.getXpos(),y = me.getYpos();
 
 	}
+
+	public static void move(int delta_x, int delta_y){
+		int x = me.getXpos(),y = me.getYpos();
+
+	}
+
 	
 	public static Player getPlayerAt(int x, int y) {
 		for (Player p : players) {
