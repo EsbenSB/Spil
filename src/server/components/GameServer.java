@@ -1,7 +1,5 @@
 package server.components;
 
-import client.Pair;
-import client.Player;
 import server.services.CommunicationService;
 import utils.ErrorCode;
 import utils.Logger;
@@ -17,13 +15,13 @@ public class GameServer implements ServerInterface {
   private final String name;
   private final String serverID;
   private final ArrayList<CommunicationService> connections = new ArrayList<>();
-  private final HashMap<String, Player> players = new HashMap<>();
-  private final Pair loc = new Pair(0,0);
-  private final Pair dir = new Pair(0,0);
+
+  private boolean started;
 
   public GameServer(Server parentServer, String name) {
     this.parentServer = parentServer;
     this.name = name;
+    this.started = false;
 
     this.serverID = Integer.toString(nextServerID);
     nextServerID++;
@@ -37,17 +35,20 @@ public class GameServer implements ServerInterface {
     switch (task) {
       case "start_server":
         // Client med id=0 er admin/opretter af serveren
-        if (commService.getClientID().equals("0")) {
-          MazeGenerator mazeGenerator = new MazeGenerator(10, 10);
-          int[][] grid = mazeGenerator.getGrid();
-
-          returnData = PackageService.constructGridData(grid);
-          broadcastData(returnData, null);
-        } else {
+        if (!commService.getClientID().equals("0")) {
           returnData.put("task", "error");
           returnData.put("code", ErrorCode.NOT_ADMIN);
           commService.sendData(returnData);
+          break;
         }
+
+        MazeGenerator mazeGenerator = new MazeGenerator(10, 10);
+        int[][] grid = mazeGenerator.getGrid();
+
+        returnData = PackageService.constructGridData(grid);
+        broadcastData(returnData, null);
+
+        started = true;
         break;
       case "move":
       case "use":
@@ -73,6 +74,18 @@ public class GameServer implements ServerInterface {
     return new ArrayList<>(connections);
   }
 
+  public ArrayList<CommunicationService> getConnections(CommunicationService commService) {
+    ArrayList<CommunicationService> tempConnections = new ArrayList<>();
+
+    for (CommunicationService connection : connections) {
+      if (!connection.equals(commService)) {
+        tempConnections.add(connection);
+      }
+    }
+
+    return tempConnections;
+  }
+
   public void addConnection(CommunicationService commService) {
     connections.add(commService);
 
@@ -80,8 +93,6 @@ public class GameServer implements ServerInterface {
     data.put("task", "joined_server");
     data.put("client_id", commService.getClientID());
     data.put("client_name", commService.getClientName());
-    Player player = new Player(commService.getClientName(),loc,dir);
-    players.put(commService.getClientID(),player);
 
     broadcastData(data, commService);
 
@@ -112,5 +123,9 @@ public class GameServer implements ServerInterface {
 
   public String getName() {
     return name;
+  }
+
+  public boolean isStarted() {
+    return started;
   }
 }

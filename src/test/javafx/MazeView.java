@@ -11,26 +11,29 @@ import server.components.MazeGenerator;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class MazeView extends Application {
   @Override
   public void start(Stage stage) throws Exception {
-    int viewSize = 600;
-    int mazeSize = 10;
+    int viewWidth = 900;
+    int viewHeight = 600;
+    int mazeWidth = 20;
+    int mazeHeight = 10;
 
     GridPane grid = new GridPane();
     grid.setHgap(0);
     grid.setVgap(0);
     grid.setPadding(new Insets(0));
 
-    HashMap<String, Image> images = loadImages(viewSize/(mazeSize*2.0 + 1));
+    HashMap<String, Image> images = loadImages(viewWidth/(mazeWidth*2.0 + 1));
 
-    MazeGenerator mazeGenerator = new MazeGenerator(mazeSize, mazeSize);
+    MazeGenerator mazeGenerator = new MazeGenerator(mazeWidth, mazeHeight);
     int[][] mazeGrid = mazeGenerator.getGrid();
 
-    for (int row = 0; row < mazeSize*2 + 1; row++) {
-      for (int col = 0; col < mazeSize*2 + 1; col++) {
+    for (int row = 0; row < mazeGrid.length; row++) {
+      for (int col = 0; col < mazeGrid[0].length; col++) {
         String image = Integer.toString(mazeGrid[row][col]);
 
         if (image.equals("0")) {
@@ -41,7 +44,7 @@ public class MazeView extends Application {
       }
     }
 
-    Scene scene = new Scene(grid, viewSize, viewSize);
+    Scene scene = new Scene(grid, viewWidth, viewHeight);
     stage.setScene(scene);
     stage.show();
   }

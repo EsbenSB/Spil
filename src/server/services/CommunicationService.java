@@ -1,6 +1,5 @@
 package server.services;
 
-import client.Player;
 import server.components.ServerInterface;
 import utils.Logger;
 import utils.PackageService;

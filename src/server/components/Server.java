@@ -68,35 +68,54 @@ public class Server implements ServerInterface {
     String task = data.get("task");
     String clientName = data.get("client_name");
     String serverName = data.get("server_name");
+
     HashMap<String, String> returnData = new HashMap<>();
     returnData.put("task", task);
 
+    GameServer gameServer;
+
     switch (task) {
       case "create_server":
-        if (gameServers.get(serverName) == null) {
-          GameServer gameServer = createGameServer(serverName);
-          commService.setClientName(clientName);
-          commService.setClientID("0");
-          transferCommService(commService, gameServer);
-
-          returnData.put("client_id", commService.getClientID());
-        } else {
+        if (gameServers.get(serverName) != null) {
           returnData.put("task", "error");
           returnData.put("code", ErrorCode.NOT_AVAILABLE);
+          break;
         }
+
+        gameServer = createGameServer(serverName);
+        commService.setClientName(clientName);
+        commService.setClientID("0");
+        transferCommService(commService, gameServer);
+
+        returnData.put("client_id", commService.getClientID());
         break;
       case "join_server":
-        GameServer gameServer = gameServers.get(serverName);
-        if (gameServer != null) {
-          commService.setClientName(clientName);
-          commService.setClientID(gameServer.getNextClientID());
-          transferCommService(commService, gameServer);
+        gameServer = gameServers.get(serverName);
 
-          returnData = PackageService.constructClientsData(commService.getClientID(), gameServer.getConnections());
-        } else {
+        if (gameServer == null) {
           returnData.put("task", "error");
           returnData.put("code", ErrorCode.NOT_FOUND);
+          break;
         }
+
+        if (gameServer.getConnections().size() == 4) {
+          returnData.put("task", "error");
+          returnData.put("code", ErrorCode.SERVER_FULL);
+          break;
+        }
+
+        if (gameServer.isStarted()) {
+          returnData.put("task", "error");
+          returnData.put("code", ErrorCode.SERVER_STARTED);
+          break;
+        }
+
+        commService.setClientName(clientName);
+        commService.setClientID(gameServer.getNextClientID());
+        transferCommService(commService, gameServer);
+
+        returnData.putAll(PackageService.constructClientsData(commService.getClientID(),
+                gameServer.getConnections(commService)));
     }
 
     commService.sendData(returnData);
