@@ -1,5 +1,7 @@
 package server.components;
 
+import client.Pair;
+import client.Player;
 import server.services.CommunicationService;
 import utils.ErrorCode;
 import utils.Logger;
@@ -15,6 +17,9 @@ public class GameServer implements ServerInterface {
   private final String name;
   private final String serverID;
   private final ArrayList<CommunicationService> connections = new ArrayList<>();
+  private final HashMap<String, Player> players = new HashMap<>();
+  private final Pair loc = new Pair(0,0);
+  private final Pair dir = new Pair(0,0);
 
   public GameServer(Server parentServer, String name) {
     this.parentServer = parentServer;
@@ -45,16 +50,9 @@ public class GameServer implements ServerInterface {
         }
         break;
       case "move":
-        // get data fra processData
-
-        // Broadcast data
-
-
-        break;
       case "use":
-        break;
       case "use_powerup":
-        break;
+        broadcastData(data,commService);
     }
   }
 
@@ -82,6 +80,9 @@ public class GameServer implements ServerInterface {
     data.put("task", "joined_server");
     data.put("client_id", commService.getClientID());
     data.put("client_name", commService.getClientName());
+    Player player = new Player(commService.getClientName(),loc,dir);
+    players.put(commService.getClientID(),player);
+
     broadcastData(data, commService);
 
     Logger.info("%s joined game server %s with id %s", commService, name, serverID);
