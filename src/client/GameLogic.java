@@ -98,7 +98,8 @@ public static List<Player> players = new ArrayList<Player>();
 		me.setLocation(newLoc);
 		Pair newDir = new Pair(x,y);
 		me.setDirection(newDir);
-
+		
+		if(newLoc != )
 
 		/* pseudo
 		for(maze.cell){
@@ -120,7 +121,7 @@ public static List<Player> players = new ArrayList<Player>();
 		 */
 	}
 
-	
+
 	public static Player getPlayerAt(int x, int y) {
 		for (Player p : players) {
 			if (p.getXpos()==x && p.getYpos()==y) {
