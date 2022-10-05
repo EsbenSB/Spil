@@ -99,21 +99,37 @@ public static List<Player> players = new ArrayList<Player>();
 		Pair newDir = new Pair(x,y);
 		me.setDirection(newDir);
 		
-		// if(newLoc != )
+		if(newLoc != )
+
+		/* pseudo
+		for(maze.cell){
+			if (gamelogic.maze.cell(newLoc.value)) == 7(shield){
+				pickUpShield(me.getPlayerID);
+				}
+			else if(maze.cell)
+		}
 
 
+		 */
 
 	}
 
-	
-	/*public static Player getPlayerAt(int x, int y) {
+	public static void pickUpShield(Player player){
+		/*
+		Client sæt sprite til shield
+
+		 */
+	}
+
+
+	public static Player getPlayerAt(int x, int y) {
 		for (Player p : players) {
 			if (p.getXpos()==x && p.getYpos()==y) {
 				return p;
 			}
 		}
 		return null;
-	}*/
+	}
 	
 	
 	
