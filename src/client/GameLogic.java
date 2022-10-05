@@ -99,7 +99,7 @@ public static List<Player> players = new ArrayList<Player>();
 		Pair newDir = new Pair(x,y);
 		me.setDirection(newDir);
 		
-		if(newLoc != )
+		// if(newLoc != )
 
 
 
