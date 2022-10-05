@@ -90,8 +90,7 @@ public static List<Player> players = new ArrayList<Player>();
 
 	}
 
-	public static void move(int delta_x, int delta_y){
-		int x = me.getXpos(),y = me.getYpos();
+	public static void move(Pair newPos){
 
 	}
 
