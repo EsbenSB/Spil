@@ -1,4 +1,4 @@
-package client.updated;
+package client.updated.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;

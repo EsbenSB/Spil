@@ -1,4 +1,9 @@
-package client.updated;
+package client.updated.game;
+
+import client.updated.game.components.Game;
+import client.updated.game.components.Pair;
+import client.updated.game.components.Player;
+import client.updated.gui.Window;
 
 import java.util.ArrayList;
 import java.util.HashMap;

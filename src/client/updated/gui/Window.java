@@ -1,8 +1,11 @@
-package client.updated;
+package client.updated.gui;
 
+import client.updated.network.NetworkClient;
+import client.updated.game.components.Pair;
+import client.updated.game.components.Player;
+import client.updated.game.GameController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;

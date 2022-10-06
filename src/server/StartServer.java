@@ -1,6 +1,6 @@
 package server;
 
-import server.components.Server;
+import server.network.Server;
 
 public class StartServer {
   public static void main(String[] args) {

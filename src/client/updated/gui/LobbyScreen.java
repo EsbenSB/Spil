@@ -1,5 +1,7 @@
-package client.updated;
+package client.updated.gui;
 
+import client.updated.game.components.Player;
+import client.updated.game.GameController;
 import javafx.css.PseudoClass;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

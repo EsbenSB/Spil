@@ -1,7 +1,6 @@
 package client;
 
-import client.services.CommunicationService;
-import utils.Logger;
+import server.utils.Logger;
 
 import java.io.IOException;
 import java.net.Socket;

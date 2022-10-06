@@ -1,5 +1,6 @@
 package client.updated;
 
+import client.updated.gui.Window;
 import javafx.application.Application;
 
 public class StartGame {

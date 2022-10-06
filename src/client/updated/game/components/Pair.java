@@ -1,4 +1,4 @@
-package client.updated;
+package client.updated.game.components;
 
 public class Pair<T> {
   public T x;

@@ -1,6 +1,4 @@
-package server.components;
-
-import server.services.CommunicationService;
+package server.network;
 
 import java.util.HashMap;
 

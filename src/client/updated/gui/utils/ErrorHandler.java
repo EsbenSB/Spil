@@ -1,4 +1,4 @@
-package client.updated;
+package client.updated.gui.utils;
 
 import javafx.css.PseudoClass;
 import javafx.scene.control.Label;

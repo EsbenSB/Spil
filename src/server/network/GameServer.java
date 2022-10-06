@@ -1,8 +1,8 @@
-package server.components;
+package server.network;
 
-import server.services.CommunicationService;
+import server.components.MazeGenerator;
 import utils.ErrorCode;
-import utils.Logger;
+import server.utils.Logger;
 import utils.PackageService;
 
 import java.util.ArrayList;

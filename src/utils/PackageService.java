@@ -1,6 +1,6 @@
 package utils;
 
-import server.services.CommunicationService;
+import server.network.CommunicationService;
 
 import java.util.ArrayList;
 import java.util.HashMap;

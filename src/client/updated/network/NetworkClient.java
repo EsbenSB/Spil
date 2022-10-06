@@ -1,5 +1,8 @@
-package client.updated;
+package client.updated.network;
 
+import client.updated.game.components.Pair;
+import client.updated.game.GameController;
+import client.updated.gui.Window;
 import utils.Config;
 import utils.PackageService;
 

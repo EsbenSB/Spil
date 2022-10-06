@@ -1,5 +1,6 @@
-package client.updated;
+package client.updated.gui;
 
+import client.updated.gui.utils.ErrorHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -7,9 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import utils.ErrorCode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class StartScreen {
   private final Window window;
