@@ -9,7 +9,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Window extends Application {
@@ -18,7 +17,6 @@ public class Window extends Application {
   private NetworkClient networkClient;
   private LobbyScreen lobbyScreen;
   private GameScreen gameScreen;
-  private Game game;
 
   @Override
   public void start(Stage stage) {
@@ -28,7 +26,6 @@ public class Window extends Application {
     grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
-    grid.setPadding(new Insets(10));
 
     Scene scene = new Scene(grid);
     scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
@@ -36,46 +33,99 @@ public class Window extends Application {
     stage.setScene(scene);
     stage.show();
 
+    GameController.setWindow(this);
     showStartScreen();
   }
 
   public void showStartScreen() {
-    clearGrid();
+    Platform.runLater(() -> {
+      clearGrid();
 
-    StartScreen startScreen = new StartScreen(this, grid);
-    startScreen.show();
+      StartScreen startScreen = new StartScreen(this, grid);
+      startScreen.show();
+    });
   }
 
   public void showLobbyScreen(String serverName, boolean admin) {
-    clearGrid();
+    Platform.runLater(() -> {
+      clearGrid();
 
-    lobbyScreen = new LobbyScreen(this, grid, serverName, admin);
-    lobbyScreen.show();
+      lobbyScreen = new LobbyScreen(this, grid, serverName, admin);
+      lobbyScreen.show();
+      lobbyScreen.updatePlayers(GameController.getPlayers());
+    });
   }
 
-  public void showGameScreen(int[][] mazeGrid) {
-    clearGrid();
+  public void showGameScreen() {
+    Platform.runLater(() -> {
+      clearGrid();
 
-    // TODO: Remove this when fixed
-    System.out.println(Arrays.deepToString(mazeGrid));
-
-    gameScreen = new GameScreen(this, grid);
-    gameScreen.show();
+      gameScreen = new GameScreen(this, grid);
+      gameScreen.show();
+      gameScreen.updateScores(GameController.getPlayers());
+    });
   }
 
-  public void showGameScreenLater(int[][] mazeGrid) {
-    Platform.runLater(() -> showGameScreen(mazeGrid));
+  public void playerJoined() {
+    lobbyScreen.updatePlayers(GameController.getPlayers());
   }
 
-  public void createGame(String clientID, String ClientName) {
-    // TODO: Don't forget this
-    //--game = new Game(clientID, clientName);
+  public void playerLeft(String playerID) {
+    Platform.runLater(() -> {
+      lobbyScreen.updatePlayers(GameController.getPlayers());
+
+      if (gameScreen != null) {
+        gameScreen.updateScores(GameController.getPlayers());
+        Player player = GameController.getPlayer(playerID);
+
+        if (player == null) return;
+
+        gameScreen.removePlayer(player);
+      }
+    });
   }
 
-  public void playerJoined(String clientID, String clientName) {
-    // TODO: Don't forget this
-    //--game.createPlayer(clientID, clientName);
-    lobbyScreen.updatePlayers(clientID, clientName);
+  public void playerMoved(String playerID, Pair<Integer> dir, boolean sendToServer) {
+    Platform.runLater(() -> {
+      Player player = GameController.getPlayer(playerID);
+
+      if (player == null) return;
+
+      gameScreen.removePlayer(player);
+      boolean change = GameController.move(player, dir);
+      gameScreen.addPlayer(player);
+
+      if (change && sendToServer) networkClient.move(dir);
+    });
+  }
+
+  public void playerAction(String playerID, boolean sendToServer) {
+    Platform.runLater(() -> {
+      Player player = GameController.getPlayer(playerID);
+      boolean change = GameController.action(player);
+
+      if (!change) return;
+      if (sendToServer) networkClient.action();
+
+      // TODO: Update the display
+    });
+  }
+
+  public void playerUsePowerup(String playerID, boolean sendToServer) {
+    Platform.runLater(() -> {
+      Player player = GameController.getPlayer(playerID);
+      boolean change = GameController.usePowerup(player);
+
+      if (!change) return;
+      if (sendToServer) networkClient.usePowerup();
+
+      // TODO: Update the display
+    });
+  }
+
+  public void playerFinished(Player player) {
+    gameScreen.addFinish(player);
+    gameScreen.removePlayer(player);
   }
 
   private void clearGrid() {
@@ -91,19 +141,16 @@ public class Window extends Application {
     stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
   }
 
+  public Scene getScene() {
+    return stage.getScene();
+  }
   public NetworkClient getNetworkClient() {
     return networkClient;
   }
 
-  public String getPlayerID() {
-    // TODO: Don't forget this
-    //--return game.getID();
-    return "0";
-  }
-
-  public String getPlayerName() {
-    // TODO: Don't forget this
-    //--return game.getName();
-    return "lukas";
+  @Override
+  public void stop() throws Exception {
+    super.stop();
+    networkClient.stopListening();
   }
 }

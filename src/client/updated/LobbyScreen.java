@@ -1,10 +1,14 @@
 package client.updated;
 
+import javafx.css.PseudoClass;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
 
 public class LobbyScreen {
   private final Window window;
@@ -13,46 +17,55 @@ public class LobbyScreen {
   private final boolean admin;
 
   private TextArea txaPlayerNames;
+  private Button btnStart;
 
   public LobbyScreen(Window window, GridPane mainGrid, String serverName, boolean admin) {
     this.window = window;
     this.mainGrid = mainGrid;
+    this.mainGrid.setPadding(new Insets(10));
     this.serverName = serverName;
     this.admin = admin;
   }
 
   public void show() {
-    window.setSize(400, 400);
+    window.setSize(420, 290);
 
-    mainGrid.add(new Label("Welcome to " + serverName), 0, 0);
+    PseudoClass titleClass = PseudoClass.getPseudoClass("title");
+    Label lblTitle = new Label("Welcome to " + serverName);
+    lblTitle.pseudoClassStateChanged(titleClass, true);
+    mainGrid.add(lblTitle, 0, 0);
+
+    PseudoClass subtitleClass = PseudoClass.getPseudoClass("subtitle");
+    Label lblPlayers = new Label("Players:");
+    lblPlayers.pseudoClassStateChanged(subtitleClass, true);
+    mainGrid.add(lblPlayers, 0, 1);
+    GridPane.setMargin(lblPlayers, new Insets(20, 0, 0, 0));
 
     txaPlayerNames = new TextArea();
-    txaPlayerNames.setPrefSize(200, 100);
+    txaPlayerNames.setPrefSize(400, 100);
     txaPlayerNames.setEditable(false);
-    mainGrid.add(txaPlayerNames, 0, 1);
+    mainGrid.add(txaPlayerNames, 0, 2);
 
-    Button btnStart = new Button("Start game");
+    btnStart = new Button("Start game");
     btnStart.setOnAction((event) -> handleStart());
     btnStart.setDisable(!admin);
-    mainGrid.add(btnStart, 0, 2);
+    mainGrid.add(btnStart, 0, 3);
     GridPane.setHalignment(btnStart, HPos.RIGHT);
-
-    updatePlayers(window.getPlayerID(), window.getPlayerName());
   }
 
   private void handleStart() {
-    int[][] mazeGrid = window.getNetworkClient().startGame();
-
-    if (mazeGrid == null) {
-      throw new RuntimeException("Something went wrong");
-    }
-
-    window.showGameScreen(mazeGrid);
+    btnStart.setText("Loading...");
+    btnStart.setDisable(true);
+    window.getNetworkClient().startGame();
   }
 
-  public void updatePlayers(String clientID, String clientName) {
-    String playerString = String.format("%s -> %s%n", clientID, clientName);
+  public void updatePlayers(ArrayList<Player> players) {
+    StringBuilder sb = new StringBuilder();
+    for (Player player : players) {
+      sb.append(String.format("%s -> %s%s%n", player.getID(), player,
+              player.getID().equals(GameController.getMe().getID()) ? " (you)" : ""));
+    }
 
-    txaPlayerNames.appendText(playerString);
+    txaPlayerNames.setText(sb.toString());
   }
 }

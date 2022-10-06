@@ -27,6 +27,8 @@ public class NetworkListener extends Thread {
         throw new RuntimeException(e);
       }
     }
+
+    commService.setListening(false);
   }
 
   public void stopRunning() {

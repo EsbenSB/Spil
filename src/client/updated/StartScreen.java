@@ -1,6 +1,7 @@
 package client.updated;
 
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,6 +22,7 @@ public class StartScreen {
   public StartScreen(Window window, GridPane mainGrid) {
     this.window = window;
     this.mainGrid = mainGrid;
+    this.mainGrid.setPadding(new Insets(10));
   }
 
   public void show() {
@@ -56,16 +58,14 @@ public class StartScreen {
     btnCreate.setText("Loading...");
     btnCreate.setDisable(true);
     boolean status = window.getNetworkClient().createServer(txfPlayerName.getText(), txfServerName.getText());
-    btnCreate.setText("Create server");
-    btnCreate.setDisable(false);
 
     if (!status) {
+      btnCreate.setText("Create server");
+      btnCreate.setDisable(false);
+
       ErrorHandler.addError(txfServerName);
       lblError.setText("Please choose another server name");
-      return;
     }
-
-    window.showLobbyScreen(txfPlayerName.getText(), true);
   }
 
   private void handleJoin() {
@@ -73,31 +73,22 @@ public class StartScreen {
 
     btnJoin.setText("Loading...");
     btnJoin.setDisable(true);
-    ArrayList<HashMap<String, String>> players = window.getNetworkClient().joinServer(txfPlayerName.getText(),
-            txfServerName.getText());
+    String error = window.getNetworkClient().joinServer(txfPlayerName.getText(), txfServerName.getText());
+
+    if (error == null) return;
+
     btnJoin.setText("Join server");
     btnJoin.setDisable(false);
 
-    String error = players.get(0).get("error");
-    if (error != null) {
-      if (error.equals(ErrorCode.NOT_FOUND)) {
-        ErrorHandler.addError(txfServerName);
-        lblError.setText("Couldn't find server");
-      } else if (error.equals(ErrorCode.SERVER_FULL)) {
-        ErrorHandler.addError(txfServerName);
-        lblError.setText("Server is full");
-      } else {
-        ErrorHandler.addError(txfServerName);
-        lblError.setText("Server has started the game");
-      }
-
-      return;
-    }
-
-    window.showLobbyScreen(txfServerName.getText(), false);
-
-    for (HashMap<String, String> playerData : players) {
-      window.playerJoined(playerData.get("client_id"), playerData.get("client_name"));
+    if (error.equals(ErrorCode.NOT_FOUND)) {
+      ErrorHandler.addError(txfServerName);
+      lblError.setText("Couldn't find server");
+    } else if (error.equals(ErrorCode.SERVER_FULL)) {
+      ErrorHandler.addError(txfServerName);
+      lblError.setText("Server is full");
+    } else {
+      ErrorHandler.addError(txfServerName);
+      lblError.setText("Server has started the game");
     }
   }
 

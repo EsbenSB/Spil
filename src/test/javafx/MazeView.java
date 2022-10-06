@@ -17,10 +17,10 @@ import java.util.HashMap;
 public class MazeView extends Application {
   @Override
   public void start(Stage stage) throws Exception {
-    int viewWidth = 900;
+    int viewWidth = 600;
     int viewHeight = 600;
     int mazeWidth = 20;
-    int mazeHeight = 10;
+    int mazeHeight = 20;
 
     GridPane grid = new GridPane();
     grid.setHgap(0);
