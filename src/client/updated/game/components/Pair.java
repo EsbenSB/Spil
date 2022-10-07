@@ -13,6 +13,10 @@ public class Pair<T> {
     return x == pair.x && y == pair.y;
   }
 
+  public Pair<Integer> add(Pair<Integer> pair) {
+    return new Pair<>((Integer)x + pair.x, (Integer)y + pair.y);
+  }
+
   @Override
   public String toString() {
     return "Pair{" +

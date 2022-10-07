@@ -114,13 +114,13 @@ public class Window extends Application {
     });
   }
 
-  public void playerUsePowerup(String playerID, boolean sendToServer) {
+  public void playerUsePowerup(String playerID, Pair<Integer> dir, boolean sendToServer) {
     Platform.runLater(() -> {
       Player player = GameController.getPlayer(playerID);
-      boolean change = GameController.usePowerup(player);
+      boolean change = GameController.usePowerup(player, dir);
 
       if (!change) return;
-      if (sendToServer) networkClient.usePowerup();
+      if (sendToServer) networkClient.usePowerup(dir);
 
       // TODO: Update the display
     });

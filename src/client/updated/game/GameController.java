@@ -5,9 +5,8 @@ import client.updated.game.components.Pair;
 import client.updated.game.components.Player;
 import client.updated.gui.Window;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
+import java.util.function.Supplier;
 
 public abstract class GameController {
   private static Game game;
@@ -26,6 +25,8 @@ public abstract class GameController {
   }
 
   public static boolean move(Player player, Pair<Integer> dir) {
+    if (player.getSpeed() == 0) return false;
+
     Pair<Integer> newPos = new Pair<>(player.getPos().x + dir.x, player.getPos().y + dir.y);
 
     // Walking into a wall without changing direction
@@ -35,26 +36,34 @@ public abstract class GameController {
     // Walking into a wall
     if (getTile(newPos) == 0) return true;
     player.setPos(newPos);
+    moved(player);
 
+    // Walking into a wall with 2 speed
+    if (player.getSpeed() == 2 && getTile(newPos.add(dir)) == 0) return true;
+    player.setPos(newPos.add(dir));
+    moved(player);
+
+    return true;
+  }
+
+  private static void moved(Player player) {
     // Walking into the finish
-    if (getTile(newPos) == -2) {
+    if (getTile(player.getPos()) == -2) {
       player.addScore(30 - 10 * game.getFinishes());
       addFinish();
       player.setFinished(true);
       window.playerFinished(player);
       player.setPos(new Pair<>(0, 0));
-      return true;
+      return;
     }
 
+    // Pickup powerup
     ArrayList<Integer> pickUpItems = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
-
-    if(pickUpItems.contains(getTile(newPos))){
-      player.setItem(getTile(newPos));
-      getTile((newPos))
+    if(pickUpItems.contains(getTile(player.getPos()))){
+      player.setItem(getTile(player.getPos()));
     }
-    // TODO: Check if tile is trap, if yes apply trap effect, otherwise do nothing
 
-    return true;
+    // TODO: Check if tile is trap, if yes apply trap effect, otherwise do nothing
   }
 
   public static boolean action(Player player) {
@@ -63,34 +72,47 @@ public abstract class GameController {
     return false;
   }
 
-  public static boolean usePowerup(Player player) {
+  public static boolean usePowerup(Player player, Pair<Integer> dir) {
     // TODO: Check if player has a powerup, if yes then apply effects or use and return true
     //       otherwise return false
-
     ArrayList<Integer> powerUps = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
     if(powerUps.contains(player.getItem())) {
       if(player.getItem() == 2 || player.getItem() == 9){
-      //direction w,a,s,d = if 2  12 if 9 11
+        //direction w,a,s,d = if 2  12 if 9 11
         return true;
       } else
-        if(player.getItem() == 3) { // super star
-          player.setEffect("7");
-          player.setSpeed(2);
-          return true;
-        } else
-          if(player.getItem() == 5){ // speed boost
-            player.setSpeed(2);
-            return true;
-          } else
-          if(player.getItem() == 7){ // shield
-          player.setEffect("7");
-          return true;
-          } else
-            if(player.getItem() == 4){
-              
-            }
+      if(player.getItem() == 3) { // super star
+        player.setEffect("7");
+        player.setSpeed(2);
+        runLater(5000,()->{
+          player.setEffect("0");
+          player.setSpeed(1);
+          return null;
+        } );
+        return true;
+      } else
+      if(player.getItem() == 5){ // speed boost
+        player.setSpeed(2);
+        runLater(5000,()->{
+          player.setSpeed(1);
+          return null;
+        } );
+        return true;
+      } else
+      if(player.getItem() == 7){ // shield
+        player.setEffect("7");
+        runLater(10000,()->{
+          player.setEffect("0");
+          return null;
+        } );
 
-        }
+        return true;
+      } else
+      if(player.getItem() == 4){
+
+      }
+
+    }
     return false;
   }
 
@@ -148,5 +170,17 @@ public abstract class GameController {
 
   public static void setWindow(Window window) {
     GameController.window = window;
+  }
+
+  public static void runLater(int delay, Supplier<Void> callback) {
+    Timer timer = new Timer();
+    timer.schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                callback.get();
+                timer.cancel();
+              }
+            }, delay);
   }
 }
