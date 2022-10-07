@@ -9,6 +9,7 @@ public class Player implements Comparable<Player> {
   private String effect;
   private int score;
   private int item;
+  private int speed;
   private boolean finished;
 
   public Player(String ID, String name) {
@@ -20,6 +21,7 @@ public class Player implements Comparable<Player> {
     this.score = 0;
     this.finished = false;
     this.item = 0;
+    this.speed = 1;
   }
 
   public String getID() {
@@ -60,6 +62,18 @@ public class Player implements Comparable<Player> {
   }
   public void setFinished(boolean finished) {
     this.finished = finished;
+  }
+  public int getSpeed() {
+    return speed;
+  }
+  public void setSpeed(int speed) {
+    this.speed = speed;
+  }
+  public void setItem(int item) {
+    this.item = item;
+  }
+  public int getItem() {
+    return item;
   }
 
   @Override
