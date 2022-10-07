@@ -169,6 +169,7 @@ public class GameScreen {
 
   public void addFinish(Player player) {
     txaFinishes.appendText(String.format("%d -> %s%n", GameController.getFinishes(), player));
+    updateScores(GameController.getPlayers());
   }
 
   // -------------------------------------------------------------------------------------------------------------------
