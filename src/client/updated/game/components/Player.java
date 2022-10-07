@@ -8,6 +8,7 @@ public class Player implements Comparable<Player> {
   private Pair<Integer> dir;
   private String effect;
   private int score;
+  private int item = 0;
   private boolean finished;
 
   public Player(String ID, String name) {

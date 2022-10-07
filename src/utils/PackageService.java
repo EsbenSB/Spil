@@ -99,7 +99,7 @@ public abstract class PackageService {
   public static HashMap<String, String> deconstructQuery(String query) {
     HashMap<String, String> data = new HashMap<>();
     String[] attributes = query.split("&");
-
+    System.out.println(query);
     for (String attribute : attributes) {
       String[] split = attribute.split("=");
       data.put(split[0], split[1]);

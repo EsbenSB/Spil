@@ -6,6 +6,7 @@ import client.updated.game.components.Player;
 import client.updated.gui.Window;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class GameController {
@@ -45,7 +46,8 @@ public abstract class GameController {
       return true;
     }
 
-    // TODO: Check if tile is powerup, if yes pickup powerup, otherwise do nothing
+    ArrayList<Integer> pickUpItems = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
+    if(getTile(newPos) == )
     // TODO: Check if tile is trap, if yes apply trap effect, otherwise do nothing
 
     return true;
