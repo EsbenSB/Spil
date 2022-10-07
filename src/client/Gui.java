@@ -85,9 +85,9 @@ public class Gui extends Application {
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 
 				switch (event.getCode()) {
-				case UP:    playerMoved(0,-1);    break;
+				case UP:    playerMoved(0,-1); break;
 				case DOWN:  playerMoved(0,1);  break;
-				case LEFT:  playerMoved(-1,0);  break;
+				case LEFT:  playerMoved(-1,0); break;
 				case RIGHT: playerMoved(+1,0); break;
 				case ESCAPE:System.exit(0);
 				case SPACE: playerUseItem();
