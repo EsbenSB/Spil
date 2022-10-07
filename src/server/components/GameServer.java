@@ -51,7 +51,9 @@ public class GameServer implements ServerInterface {
         started = true;
         break;
       case "move":
+        broadcastData(data,commService);
       case "use":
+        broadcastData(data,commService);
       case "use_powerup":
         broadcastData(data,commService);
     }
