@@ -5,9 +5,8 @@ import client.updated.game.components.Pair;
 import client.updated.game.components.Player;
 import client.updated.gui.Window;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
+import java.util.function.Supplier;
 
 public abstract class GameController {
   private static Game game;
@@ -133,5 +132,17 @@ public abstract class GameController {
 
   public static void setWindow(Window window) {
     GameController.window = window;
+  }
+
+  public static void runLater(int delay, Supplier<Void> callback) {
+    Timer timer = new Timer();
+    timer.schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                callback.get();
+                timer.cancel();
+              }
+            }, delay);
   }
 }
