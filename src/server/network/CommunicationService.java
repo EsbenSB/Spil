@@ -49,7 +49,7 @@ public class CommunicationService extends Thread {
     }
   }
 
-  public void sendData(HashMap<String, String> data) {
+  public synchronized void sendData(HashMap<String, String> data) {
     try{
       String query = PackageService.constructQuery(data);
       out.writeBytes(query + "\n");
