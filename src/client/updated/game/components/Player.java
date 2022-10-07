@@ -8,7 +8,7 @@ public class Player implements Comparable<Player> {
   private Pair<Integer> dir;
   private String effect;
   private int score;
-  private int item = 0;
+  private int item;
   private boolean finished;
 
   public Player(String ID, String name) {
@@ -19,6 +19,7 @@ public class Player implements Comparable<Player> {
     this.effect = "0";
     this.score = 0;
     this.finished = false;
+    this.item = 0;
   }
 
   public String getID() {

@@ -47,7 +47,7 @@ public abstract class GameController {
     }
 
     ArrayList<Integer> pickUpItems = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
-    if(getTile(newPos) == )
+    if( getTile(newPos))
     // TODO: Check if tile is trap, if yes apply trap effect, otherwise do nothing
 
     return true;
