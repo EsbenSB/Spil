@@ -1,5 +1,6 @@
 package client.updated.gui;
 
+import client.updated.game.components.Game;
 import client.updated.game.components.Pair;
 import client.updated.game.components.Player;
 import client.updated.game.GameController;
@@ -130,38 +131,39 @@ public class GameScreen {
       if (GameController.getMe().isFinished()) return;
 
       String ID = GameController.getMe().getID();
+      int invert = GameController.getMe().getEffect().equals("8") ? -1 : 1;
 
       switch (event.getCode()) {
         case UP:
-          Pair<Integer> dir = new Pair<>(0, -1);
+          Pair<Integer> dir = new Pair<>(0, -1).multiply(invert);
           window.playerMoved(ID, dir, true);
           break;
         case DOWN:
-          dir = new Pair<>(0, 1);
+          dir = new Pair<>(0, 1).multiply(invert);
           window.playerMoved(ID, dir, true);
           break;
         case LEFT:
-          dir = new Pair<>(-1, 0);
+          dir = new Pair<>(-1, 0).multiply(invert);
           window.playerMoved(ID, dir, true);
           break;
         case RIGHT:
-          dir = new Pair<>(1, 0);
+          dir = new Pair<>(1, 0).multiply(invert);
           window.playerMoved(ID, dir, true);
           break;
         case W:
-          dir = new Pair<>(0, -1);
+          dir = new Pair<>(0, -1).multiply(invert);
           window.playerUsePowerup(ID, dir, true);
           break;
         case S:
-          dir = new Pair<>(0, 1);
+          dir = new Pair<>(0, 1).multiply(invert);
           window.playerUsePowerup(ID, dir, true);
           break;
         case A:
-          dir = new Pair<>(-1, 0);
+          dir = new Pair<>(-1, 0).multiply(invert);
           window.playerUsePowerup(ID, dir, true);
           break;
         case D:
-          dir = new Pair<>(1, 0);
+          dir = new Pair<>(1, 0).multiply(invert);
           window.playerUsePowerup(ID, dir, true);
           break;
         case SPACE:
@@ -231,6 +233,11 @@ public class GameScreen {
 
   public void removePowerup(Pair<Integer> pos) {
     updateTile(pos, images.get("-1.jpeg"));
+  }
+
+  public void handleExplosion(Pair<Integer> pos) {
+    // TODO: Set the images on tiles in all directions to the correct explosion image.
+    //       Stop if you hit a wall and redraw player if hit.
   }
 
   // -------------------------------------------------------------------------------------------------------------------

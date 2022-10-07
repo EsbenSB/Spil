@@ -1,5 +1,6 @@
 package client.updated.gui;
 
+import client.updated.game.components.Game;
 import client.updated.network.NetworkClient;
 import client.updated.game.components.Pair;
 import client.updated.game.components.Player;
@@ -124,6 +125,7 @@ public class Window extends Application {
       Player player = GameController.getPlayer(playerID);
 
       if (player == null) return;
+      int powerup = player.getItem();
       boolean change = GameController.usePowerup(player, dir);
 
       if (!change) return;
@@ -131,6 +133,7 @@ public class Window extends Application {
 
       player.setItem(-1);
       gameScreen.updatePowerup();
+
       // TODO: Check what powerup and update the display in the way the powerup would
     });
   }
@@ -138,6 +141,10 @@ public class Window extends Application {
   public void playerFinished(Player player) {
     gameScreen.addFinish(player);
     gameScreen.removePlayer(player);
+  }
+
+  public void handleExplosion(Pair<Integer> pos) {
+    gameScreen.handleExplosion(pos);
   }
 
   private void clearGrid() {

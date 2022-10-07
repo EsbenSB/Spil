@@ -76,61 +76,92 @@ public abstract class GameController {
   }
 
   public static boolean usePowerup(Player player, Pair<Integer> dir) {
-    // TODO: Check if player has a powerup, if yes then apply effects or use and return true
-    //       otherwise return false
-    ArrayList<Integer> powerUps = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
-    if(powerUps.contains(player.getItem())) {
-      Pair<Integer> targetTile = player.getPos().add(dir);
-      if(player.getItem() == 2){ //trap
-        if(getTile(targetTile) != 0){
-          setTile(targetTile,12);
-        } else
-          if(player.getItem() == 9){ //bomb
-            setTile(targetTile,11); //Skal kunne sprede sig til flere felter
+    if (!Arrays.asList(2,3,4,5,6,7,8,9).contains(player.getItem())) return false;
+
+    Pair<Integer> targetPos = player.getPos().add(dir);
+
+    switch (player.getItem()) {
+      case 2:  // Trap
+        if (getTile(targetPos) == 0) return false;
+
+        setTile(targetPos, 12);
+        break;
+      case 3:  // Super star
+        player.setSpeed(2);
+        player.setImmune(true);
+        //--player.setEffect("3");
+
+        // TODO: We need to set effect="3" and make images for the effect...
+        //       and so that we can make the player immune to damage
+        int dummyVariable = 0;  // TODO: Remove this line, as it is only here to remove warnings in the switch branch...
+
+        runLater(3000, () -> {
+          player.setSpeed(1);
+          player.setImmune(false);
+          //--player.setEffect("0");
+          return null;
+        });
+        break;
+      case 4:  // Pickaxe
+        if (getTile(targetPos) == 0) return false;
+
+        setTile(targetPos, 0);
+        break;
+      case 5:  // Speed boost
+        player.setSpeed(2);
+
+        runLater(5000, () -> {
+          player.setSpeed(1);
+          return null;
+        });
+        break;
+      case 6:  // Gun
+        // TODO: Check if show hits anyone, if so set hit players speed=0 and effect=6
+
+        break;
+      case 7:  // Shield
+        player.setImmune(true);
+        player.setEffect("7");
+
+        runLater(10000, () -> {
+          player.setImmune(false);
+          player.setEffect("0");
+          return null;
+        });
+        break;
+      case 8:  // Demon
+        for (Player p : game.getPlayers()) {
+          if (!p.equals(player)) {
+            p.setEffect("8");
+
+            runLater(5000, () -> {
+              p.setEffect("0");
+              return null;
+            });
           }
-        //direction w,a,s,d = if 2  12 if 9 11
-        return true;
-      } else
-      if(player.getItem() == 3) { // super star
-        player.setEffect("7");
-        player.setSpeed(2);
-        runLater(5000,()->{
-          player.setEffect("0");
-          player.setSpeed(1);
-          return null;
-        } );
-        return true;
-      } else
-      if(player.getItem() == 5){ // speed boost
-        player.setSpeed(2);
-        runLater(5000,()->{
-          player.setSpeed(1);
-          return null;
-        } );
-        return true;
-      } else
-      if(player.getItem() == 7){ // shield
-        player.setEffect("7");
-        runLater(10000,()->{
-          player.setEffect("0");
-          return null;
-        } );
-
-        return true;
-      } else
-      if(player.getItem() == 4){ //pickaxe
-        if(getTile(targetTile) == 0){
-          setTile(targetTile,-1);
         }
-      }
-      if(player.getItem() == 6){ //gun
-        if(getTile(targetTile) != 0){
-          setTile(targetTile,10); //Mangler at kunne sprede sig til flere felter
-        }
-      }
+        break;
+      case 9:  // Bomb
+        if (getTile(targetPos) == 0) targetPos = targetPos.add(dir);
+        if (getTile(targetPos) == 0) return false;
 
+        setTile(targetPos, 9);
+
+        Pair<Integer> finalPos = new Pair<>(targetPos.x, targetPos.y);
+        runLater(2000, () -> {
+          explosion(finalPos);
+          window.handleExplosion(finalPos);
+          return null;
+        });
     }
-    return false;
+
+    player.setItem(-1);
+    return true;
+  }
+
+  public static void explosion(Pair<Integer> pos) {
+    // TODO: Check in all directions for players. If a player is hit make speed=0 and effect="3"
+    //       If a wall is hit, stop checking
   }
 
   public static ArrayList<Player> getPlayers() {

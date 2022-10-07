@@ -9,20 +9,16 @@ public class Pair<T> {
     this.y = y;
   }
 
-  public T getX() {
-    return x;
-  }
-
-  public T getY() {
-    return y;
-  }
-
   public boolean equals(Pair<T> pair) {
     return x == pair.x && y == pair.y;
   }
 
   public Pair<Integer> add(Pair<Integer> pair) {
     return new Pair<>((Integer)x + pair.x, (Integer)y + pair.y);
+  }
+
+  public Pair<Integer> multiply(int multiple) {
+    return new Pair<>((Integer)x * multiple, (Integer)y * multiple);
   }
 
   @Override
