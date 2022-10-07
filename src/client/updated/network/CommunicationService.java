@@ -1,4 +1,4 @@
-package client.updated;
+package client.updated.network;
 
 import utils.PackageService;
 
@@ -17,7 +17,7 @@ public class CommunicationService {
   private final DataOutputStream out;
 
   private NetworkListener listener;
-  private boolean listening;
+  private volatile boolean listening;
 
   public CommunicationService(NetworkClient networkClient, Socket connectionSocket) {
     this.networkClient = networkClient;
@@ -89,11 +89,13 @@ public class CommunicationService {
   }
 
   public void stopListening() {
-    listener.stopRunning();
-    listening = false;
+    if (!listening) return;
 
-    //noinspection StatementWithEmptyBody
-    while (listener.isAlive());
+    listener.stopRunning();
+  }
+
+  public void setListening(boolean listening) {
+    this.listening = listening;
 
     try {
       connectionSocket.setSoTimeout(0);

@@ -1,6 +1,6 @@
 package utils;
 
-import server.services.CommunicationService;
+import server.network.CommunicationService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +27,8 @@ public abstract class PackageService {
     HashMap<String, String> gridData = new HashMap<>();
     gridData.put("task", "start_server");
     gridData.put("grid", sb.toString());
-    gridData.put("width", Integer.toString(grid.length));
-    gridData.put("height", Integer.toString(grid[0].length));
+    gridData.put("width", Integer.toString(grid[0].length));
+    gridData.put("height", Integer.toString(grid.length));
 
     return gridData;
   }

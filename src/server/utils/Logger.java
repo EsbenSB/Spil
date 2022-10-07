@@ -1,4 +1,4 @@
-package utils;
+package server.utils;
 
 public abstract class Logger {
 

@@ -1,0 +1,26 @@
+.text-area {
+	-fx-font-size: 15px;
+}
+
+.text-area .scroll-bar:vertical {
+	-fx-pref-width: 1;
+	-fx-opacity: 0;
+}
+
+.text-field:error {
+	-fx-text-box-border: red;
+	-fx-focus-color: red;
+}
+
+.label:error {
+	-fx-text-fill: red;
+	-fx-font-weight: bold;
+}
+
+.label:title {
+	-fx-font-size: 35px;
+}
+
+.label:subtitle {
+	-fx-font-size: 20px;
+}

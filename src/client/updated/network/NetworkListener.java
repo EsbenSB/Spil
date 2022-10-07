@@ -1,4 +1,4 @@
-package client.updated;
+package client.updated.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +27,8 @@ public class NetworkListener extends Thread {
         throw new RuntimeException(e);
       }
     }
+
+    commService.setListening(false);
   }
 
   public void stopRunning() {

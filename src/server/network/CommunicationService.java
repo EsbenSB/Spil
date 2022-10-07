@@ -1,7 +1,6 @@
-package server.services;
+package server.network;
 
-import server.components.ServerInterface;
-import utils.Logger;
+import server.utils.Logger;
 import utils.PackageService;
 
 import java.io.BufferedReader;

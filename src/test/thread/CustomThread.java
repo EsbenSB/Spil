@@ -1,67 +1,36 @@
 package test.thread;
 
-public class CustomThread extends Thread {
-  private boolean running;
-  private boolean listening;
+import utils.Config;
 
-  public CustomThread() {
-    this.running = false;
-    this.listening = false;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+
+public class CustomThread extends Thread {
+  private final BufferedReader in;
+
+  public CustomThread(Socket s) throws IOException {
+    this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
   }
 
   public void run() {
-    while (running) {
-      int count = 0;
-      while (listening) {
-        if (count % 10000000 == 0) {
-          System.out.println(count);
-        }
-        count++;
-      }
+    try {
+      System.out.println("Thread got " + in.readLine());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
-  public void startRunning() {
-    System.out.println("Started running");
+  public static void main(String[] args) throws IOException {
+    Socket s = new Socket(Config.SERVER_HOST, Config.SERVER_PORT);
+    BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+    DataOutputStream out = new DataOutputStream(s.getOutputStream());
+    CustomThread thread = new CustomThread(s);
+    thread.start();
 
-    running = true;
-    start();
-  }
-
-  public void stopRunning() {
-    running = false;
-
-    System.out.println("Stopped running");
-  }
-
-  public void startListening() {
-    System.out.println("Started listening");
-
-    listening = true;
-  }
-
-  public void stopListening() {
-    listening = false;
-
-    System.out.println("Stopped listening");
-  }
-
-  public static void main(String[] args) throws InterruptedException {
-    CustomThread thread = new CustomThread();
-    thread.startRunning();
-    thread.startListening();
-
-    Thread.sleep(1000);
-
-    thread.stopListening();
-
-    Thread.sleep(1000);
-
-    thread.startListening();
-
-    Thread.sleep(1000);
-
-    thread.stopListening();
-    thread.stopRunning();
+    System.out.println("Main got " + in.readLine());
+    out.writeBytes("got it\n");
   }
 }

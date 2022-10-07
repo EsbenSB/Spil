@@ -1,4 +1,4 @@
-package client.services;
+package client;
 
 import client.Client;
 import utils.PackageService;

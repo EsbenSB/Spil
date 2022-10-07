@@ -1,11 +1,12 @@
-package server.components;
+package server.network;
 
-import server.services.CommunicationService;
+import server.components.MazeGenerator;
 import utils.ErrorCode;
-import utils.Logger;
+import server.utils.Logger;
 import utils.PackageService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class GameServer implements ServerInterface {
@@ -15,6 +16,7 @@ public class GameServer implements ServerInterface {
   private final String name;
   private final String serverID;
   private final ArrayList<CommunicationService> connections = new ArrayList<>();
+  private final ArrayList<String> availableIDs = new ArrayList<>(Arrays.asList("1", "2", "3"));
 
   private boolean started;
 
@@ -42,7 +44,7 @@ public class GameServer implements ServerInterface {
           break;
         }
 
-        MazeGenerator mazeGenerator = new MazeGenerator(10, 10);
+        MazeGenerator mazeGenerator = new MazeGenerator(15, 10);
         int[][] grid = mazeGenerator.getGrid();
 
         returnData = PackageService.constructGridData(grid);
@@ -55,7 +57,8 @@ public class GameServer implements ServerInterface {
       case "use":
         broadcastData(data,commService);
       case "use_powerup":
-        broadcastData(data,commService);
+        data.put("client_id", commService.getClientID());
+        broadcastData(data, commService);
     }
   }
 
@@ -105,6 +108,22 @@ public class GameServer implements ServerInterface {
     connections.remove(commService);
     Logger.info("%s left game server %s with id %s", commService, name, serverID);
 
+    if (commService.getClientID().equals("0")) {
+      HashMap<String, String> data = new HashMap<>();
+      data.put("task", "server_closed");
+      broadcastData(data, commService);
+
+      for (CommunicationService connection : connections) {
+        connection.setServer(parentServer);
+      }
+
+      parentServer.removeGameServer(this);
+      return;
+    }
+
+    availableIDs.add(commService.getClientID());
+    availableIDs.sort(String::compareTo);
+
     HashMap<String, String> data = new HashMap<>();
     data.put("task", "left_server");
     data.put("client_id", commService.getClientID());
@@ -116,17 +135,14 @@ public class GameServer implements ServerInterface {
   }
 
   public String getNextClientID() {
-    return Integer.toString(connections.size());
+    return availableIDs.remove(0);
   }
-
   public String getServerID() {
     return serverID;
   }
-
   public String getName() {
     return name;
   }
-
   public boolean isStarted() {
     return started;
   }

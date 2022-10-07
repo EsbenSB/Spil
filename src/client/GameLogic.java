@@ -87,7 +87,7 @@ public static List<Player> players = new ArrayList<Player>();
 		henter en Key fra client baseret på den loc, man sætter som parameter
 		cliet.getKey(loc);
 		 */
-		return new HashMap<>();
+		return null;
 	}
 
 	public static void grabItem(int delta_x, int delta_y, int item){
