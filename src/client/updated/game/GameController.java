@@ -75,6 +75,44 @@ public abstract class GameController {
   public static boolean usePowerup(Player player, Pair<Integer> dir) {
     // TODO: Check if player has a powerup, if yes then apply effects or use and return true
     //       otherwise return false
+    ArrayList<Integer> powerUps = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
+    if(powerUps.contains(player.getItem())) {
+      if(player.getItem() == 2 || player.getItem() == 9){
+        //direction w,a,s,d = if 2  12 if 9 11
+        return true;
+      } else
+      if(player.getItem() == 3) { // super star
+        player.setEffect("7");
+        player.setSpeed(2);
+        runLater(5000,()->{
+          player.setEffect("0");
+          player.setSpeed(1);
+          return null;
+        } );
+        return true;
+      } else
+      if(player.getItem() == 5){ // speed boost
+        player.setSpeed(2);
+        runLater(5000,()->{
+          player.setSpeed(1);
+          return null;
+        } );
+        return true;
+      } else
+      if(player.getItem() == 7){ // shield
+        player.setEffect("7");
+        runLater(10000,()->{
+          player.setEffect("0");
+          return null;
+        } );
+
+        return true;
+      } else
+      if(player.getItem() == 4){
+
+      }
+
+    }
     return false;
   }
 
