@@ -31,7 +31,7 @@ public class Window extends Application {
     grid.setVgap(10);
 
     Scene scene = new Scene(grid);
-    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
+    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/styles.css")).toExternalForm());
 
     stage.setScene(scene);
     stage.show();
