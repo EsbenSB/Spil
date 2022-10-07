@@ -63,7 +63,9 @@ public class NetworkClient {
         window.playerAction(data.get("client_id"), false);
         break;
       case "use_powerup":
-        window.playerUsePowerup(data.get("client_id"), false);
+        dirHor = Integer.parseInt(data.get("dir_hor"));
+        dirVer = Integer.parseInt(data.get("dir_ver"));
+        window.playerUsePowerup(data.get("client_id"), new Pair<>(dirHor, dirVer), false);
     }
   }
 
@@ -131,9 +133,11 @@ public class NetworkClient {
     commService.sendData(sendData);
   }
 
-  public void usePowerup() {
+  public void usePowerup(Pair<Integer> dir) {
     HashMap<String, String> sendData = new HashMap<>();
     sendData.put("task", "use_powerup");
+    sendData.put("dir_hor", Integer.toString(dir.x));
+    sendData.put("dir_ver", Integer.toString(dir.y));
 
     commService.sendData(sendData);
   }

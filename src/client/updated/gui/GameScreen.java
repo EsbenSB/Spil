@@ -124,11 +124,10 @@ public class GameScreen {
       if (GameController.getMe().isFinished()) return;
 
       String ID = GameController.getMe().getID();
-      Pair<Integer> dir;
 
       switch (event.getCode()) {
         case UP:
-          dir = new Pair<>(0, -1);
+          Pair<Integer> dir = new Pair<>(0, -1);
           window.playerMoved(ID, dir, true);
           break;
         case DOWN:
@@ -143,11 +142,24 @@ public class GameScreen {
           dir = new Pair<>(1, 0);
           window.playerMoved(ID, dir, true);
           break;
+        case W:
+          dir = new Pair<>(0, -1);
+          window.playerUsePowerup(ID, dir, true);
+          break;
+        case S:
+          dir = new Pair<>(0, 1);
+          window.playerUsePowerup(ID, dir, true);
+          break;
+        case A:
+          dir = new Pair<>(-1, 0);
+          window.playerUsePowerup(ID, dir, true);
+          break;
+        case D:
+          dir = new Pair<>(1, 0);
+          window.playerUsePowerup(ID, dir, true);
+          break;
         case SPACE:
           window.playerAction(ID, true);
-          break;
-        case SHIFT:
-          window.playerUsePowerup(ID, true);
       }
     });
   }
