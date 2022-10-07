@@ -9,6 +9,14 @@ public class Pair<T> {
     this.y = y;
   }
 
+  public T getX() {
+    return x;
+  }
+
+  public T getY() {
+    return y;
+  }
+
   public boolean equals(Pair<T> pair) {
     return x == pair.x && y == pair.y;
   }

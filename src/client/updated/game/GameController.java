@@ -77,7 +77,14 @@ public abstract class GameController {
     //       otherwise return false
     ArrayList<Integer> powerUps = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
     if(powerUps.contains(player.getItem())) {
-      if(player.getItem() == 2 || player.getItem() == 9){
+      Pair<Integer> targetTile = new Pair<>(player.getPos().getX()+dir.getX(),player.getPos().getY()+ dir.getY());
+      if(player.getItem() == 2){ //trap
+        if(getTile(targetTile) != 0){
+          setTile(targetTile,12);
+        } else
+          if(player.getItem() == 9){ //bomb
+            setTile(targetTile,11); //Skal kunne sprede sig til flere felter
+          }
         //direction w,a,s,d = if 2  12 if 9 11
         return true;
       } else
@@ -108,8 +115,15 @@ public abstract class GameController {
 
         return true;
       } else
-      if(player.getItem() == 4){
-
+      if(player.getItem() == 4){ //pickaxe
+        if(getTile(targetTile) == 0){
+          setTile(targetTile,-1);
+        }
+      }
+      if(player.getItem() == 6){ //gun
+        if(getTile(targetTile) != 0){
+          setTile(targetTile,10); //Mangler at kunne sprede sig til flere felter
+        }
       }
 
     }
@@ -150,6 +164,10 @@ public abstract class GameController {
 
   public static int getTile(Pair<Integer> pos) {
     return game.getMazeGrid()[pos.y][pos.x];
+  }
+
+  public static void setTile(Pair<Integer> pos,int newEffekt){
+    game.getMazeGrid()[pos.y][pos.x] = newEffekt;
   }
 
   public static int[][] getMazeGrid() {
