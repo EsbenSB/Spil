@@ -20,15 +20,12 @@ public class Player implements Comparable<Player> {
     this.effect = "0";
     this.score = 0;
     this.finished = false;
-    this.item = 0;
+    this.item = -1;
     this.speed = 1;
   }
 
   public String getID() {
     return ID;
-  }
-  public String getName() {
-    return name;
   }
   public Pair<Integer> getPos() {
     return pos;

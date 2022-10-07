@@ -114,15 +114,24 @@ public class Window extends Application {
     });
   }
 
+  public void playerGotPowerup() {
+    gameScreen.updatePowerup();
+    gameScreen.removePowerup(GameController.getMe().getPos());
+  }
+
   public void playerUsePowerup(String playerID, Pair<Integer> dir, boolean sendToServer) {
     Platform.runLater(() -> {
       Player player = GameController.getPlayer(playerID);
+
+      if (player == null) return;
       boolean change = GameController.usePowerup(player, dir);
 
       if (!change) return;
       if (sendToServer) networkClient.usePowerup(dir);
 
-      // TODO: Update the display
+      player.setItem(-1);
+      gameScreen.updatePowerup();
+      // TODO: Check what powerup and update the display in the way the powerup would
     });
   }
 

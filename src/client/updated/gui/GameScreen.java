@@ -35,6 +35,7 @@ public class GameScreen {
   private Label[][] tiles;
 
   private GridPane gameGrid;
+  private Label lblPowerup;
   private TextArea txaFinishes;
   private TextArea txaScores;
   private Button btnStart;
@@ -51,33 +52,38 @@ public class GameScreen {
   public void show() {
     PseudoClass subtitle = PseudoClass.getPseudoClass("subtitle");
 
-    mainGrid.add(gameGrid, 0, 0, 1, 5);
+    mainGrid.add(gameGrid, 0, 0, 1, 6);
+
+    lblPowerup = new Label("");
+    mainGrid.add(lblPowerup, 1, 0);
 
     Label lblFinishes = new Label("Finishes:");
     lblFinishes.pseudoClassStateChanged(subtitle, true);
-    mainGrid.add(lblFinishes, 1, 0);
+    mainGrid.add(lblFinishes, 1, 1);
     GridPane.setMargin(lblFinishes, new Insets(10, 0, 0, 0));
 
     txaFinishes = new TextArea();
     txaFinishes.setEditable(false);
     txaFinishes.setPrefSize(SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
-    mainGrid.add(txaFinishes, 1, 1);
+    mainGrid.add(txaFinishes, 1, 2);
 
     Label lblScores = new Label("Scores:");
     lblScores.pseudoClassStateChanged(subtitle, true);
-    mainGrid.add(lblScores, 1, 2);
+    mainGrid.add(lblScores, 1, 3);
 
     txaScores = new TextArea();
     txaScores.setEditable(false);
     txaScores.setPrefSize(SCOREBOARD_WIDTH, SCOREBOARD_HEIGHT);
-    mainGrid.add(txaScores, 1, 3);
+    mainGrid.add(txaScores, 1, 4);
 
     btnStart = new Button("Start new game");
     btnStart.setDisable(true);
-    //--btnStart.setOnAction((event) -> handleStart());
-    mainGrid.add(btnStart, 1, 4);
+    btnStart.setOnAction((event) -> handleStart());
+    mainGrid.add(btnStart, 1, 5);
     GridPane.setHalignment(btnStart, HPos.CENTER);
     GridPane.setValignment(btnStart, VPos.TOP);
+
+    updatePowerup();
   }
 
   private void initGameGrid() {
@@ -166,6 +172,12 @@ public class GameScreen {
 
   // -------------------------------------------------------------------------------------------------------------------
 
+  private void handleStart() {
+    window.getNetworkClient().startGame();
+  }
+
+  // -------------------------------------------------------------------------------------------------------------------
+
   private void updateTile(Pair<Integer> pos, Image newImage) {
     tiles[pos.y][pos.x].setGraphic(new ImageView(newImage));
   }
@@ -182,6 +194,19 @@ public class GameScreen {
   public void addFinish(Player player) {
     txaFinishes.appendText(String.format("%d -> %s%n", GameController.getFinishes(), player));
     updateScores(GameController.getPlayers());
+
+    if (GameController.getFinishes() == GameController.getPlayers().size()) {
+      btnStart.setDisable(false);
+    }
+  }
+
+  public void updatePowerup() {
+    Player player = GameController.getMe();
+    ImageView imageView = new ImageView(images.get(player.getItem() + ".jpeg"));
+    imageView.setFitWidth(SCOREBOARD_WIDTH);
+    imageView.setFitHeight(SCOREBOARD_WIDTH);
+
+    lblPowerup.setGraphic(imageView);
   }
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -202,6 +227,10 @@ public class GameScreen {
     if (player.isFinished()) return;
 
     updateTile(player.getPos(), images.get(player.getImageName()));
+  }
+
+  public void removePowerup(Pair<Integer> pos) {
+    updateTile(pos, images.get("-1.jpeg"));
   }
 
   // -------------------------------------------------------------------------------------------------------------------

@@ -27,7 +27,7 @@ public abstract class GameController {
   public static boolean move(Player player, Pair<Integer> dir) {
     if (player.getSpeed() == 0) return false;
 
-    Pair<Integer> newPos = new Pair<>(player.getPos().x + dir.x, player.getPos().y + dir.y);
+    Pair<Integer> newPos = player.getPos().add(dir);
 
     // Walking into a wall without changing direction
     if (getTile(newPos) == 0 && player.getDir().equals(dir)) return false;
@@ -39,10 +39,10 @@ public abstract class GameController {
     boolean shouldReturn = moved(player);
 
     // Walking into a wall with 2 speed
-    if ((player.getSpeed() == 2 && getTile(newPos.add(dir)) == 0) || shouldReturn) return true;
+    if (player.getSpeed() == 1 || shouldReturn) return true;
+    if (getTile(player.getPos().add(dir)) == 0) return true;
     player.setPos(newPos.add(dir));
     moved(player);
-
     return true;
   }
 
@@ -61,6 +61,8 @@ public abstract class GameController {
     ArrayList<Integer> pickUpItems = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
     if(pickUpItems.contains(getTile(player.getPos()))){
       player.setItem(getTile(player.getPos()));
+      setTile(player.getPos(), -1);
+      window.playerGotPowerup();
     }
 
     // TODO: Check if tile is trap, if yes apply trap effect and return true, otherwise return false
@@ -78,7 +80,7 @@ public abstract class GameController {
     //       otherwise return false
     ArrayList<Integer> powerUps = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8,9));
     if(powerUps.contains(player.getItem())) {
-      Pair<Integer> targetTile = new Pair<>(player.getPos().getX()+dir.getX(),player.getPos().getY()+ dir.getY());
+      Pair<Integer> targetTile = player.getPos().add(dir);
       if(player.getItem() == 2){ //trap
         if(getTile(targetTile) != 0){
           setTile(targetTile,12);
@@ -167,8 +169,8 @@ public abstract class GameController {
     return game.getMazeGrid()[pos.y][pos.x];
   }
 
-  public static void setTile(Pair<Integer> pos,int newEffekt){
-    game.getMazeGrid()[pos.y][pos.x] = newEffekt;
+  public static void setTile(Pair<Integer> pos, int tileValue){
+    game.getMazeGrid()[pos.y][pos.x] = tileValue;
   }
 
   public static int[][] getMazeGrid() {
