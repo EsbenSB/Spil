@@ -36,17 +36,17 @@ public abstract class GameController {
     // Walking into a wall
     if (getTile(newPos) == 0) return true;
     player.setPos(newPos);
-    moved(player);
+    boolean shouldReturn = moved(player);
 
     // Walking into a wall with 2 speed
-    if (player.getSpeed() == 2 && getTile(newPos.add(dir)) == 0) return true;
+    if ((player.getSpeed() == 2 && getTile(newPos.add(dir)) == 0) || shouldReturn) return true;
     player.setPos(newPos.add(dir));
     moved(player);
 
     return true;
   }
 
-  private static void moved(Player player) {
+  private static boolean moved(Player player) {
     // Walking into the finish
     if (getTile(player.getPos()) == -2) {
       player.addScore(30 - 10 * game.getFinishes());
@@ -54,7 +54,7 @@ public abstract class GameController {
       player.setFinished(true);
       window.playerFinished(player);
       player.setPos(new Pair<>(0, 0));
-      return;
+      return true;
     }
 
     // Pickup powerup
@@ -63,7 +63,8 @@ public abstract class GameController {
       player.setItem(getTile(player.getPos()));
     }
 
-    // TODO: Check if tile is trap, if yes apply trap effect, otherwise do nothing
+    // TODO: Check if tile is trap, if yes apply trap effect and return true, otherwise return false
+    return false;
   }
 
   public static boolean action(Player player) {
