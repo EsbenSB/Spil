@@ -180,6 +180,10 @@ public class GameScreen {
 
   // -------------------------------------------------------------------------------------------------------------------
 
+  public void resetTile(Pair<Integer> pos) {
+    updateTile(pos, images.get("-1.jpeg"));
+  }
+
   private void updateTile(Pair<Integer> pos, Image newImage) {
     tiles[pos.y][pos.x].setGraphic(new ImageView(newImage));
   }
@@ -231,13 +235,13 @@ public class GameScreen {
     updateTile(player.getPos(), images.get(player.getImageName()));
   }
 
-  public void removePowerup(Pair<Integer> pos) {
-    updateTile(pos, images.get("-1.jpeg"));
-  }
-
   public void handleExplosion(Pair<Integer> pos) {
     // TODO: Set the images on tiles in all directions to the correct explosion image.
     //       Stop if you hit a wall and redraw player if hit.
+  }
+
+  public void addTrap(Pair<Integer> pos) {
+    updateTile(pos, images.get("12.jpeg"));
   }
 
   // -------------------------------------------------------------------------------------------------------------------

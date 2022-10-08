@@ -1,5 +1,7 @@
 package client.updated.game.components;
 
+import java.util.Objects;
+
 public class Pair<T> {
   public T x;
   public T y;
@@ -9,16 +11,20 @@ public class Pair<T> {
     this.y = y;
   }
 
-  public boolean equals(Pair<T> pair) {
-    return x == pair.x && y == pair.y;
-  }
-
   public Pair<Integer> add(Pair<Integer> pair) {
     return new Pair<>((Integer)x + pair.x, (Integer)y + pair.y);
   }
 
   public Pair<Integer> multiply(int multiple) {
     return new Pair<>((Integer)x * multiple, (Integer)y * multiple);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Pair<?> pair = (Pair<?>) o;
+    return Objects.equals(x, pair.x) && Objects.equals(y, pair.y);
   }
 
   @Override

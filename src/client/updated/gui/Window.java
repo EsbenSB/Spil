@@ -97,7 +97,7 @@ public class Window extends Application {
 
       gameScreen.removePlayer(player);
       boolean change = GameController.move(player, dir);
-      gameScreen.addPlayer(player);
+      updatePlayer(player);
 
       if (change && sendToServer) networkClient.move(dir);
     });
@@ -117,7 +117,7 @@ public class Window extends Application {
 
   public void playerGotPowerup() {
     gameScreen.updatePowerup();
-    gameScreen.removePowerup(GameController.getMe().getPos());
+    gameScreen.resetTile(GameController.getMe().getPos());
   }
 
   public void playerUsePowerup(String playerID, Pair<Integer> dir, boolean sendToServer) {
@@ -125,22 +125,42 @@ public class Window extends Application {
       Player player = GameController.getPlayer(playerID);
 
       if (player == null) return;
-      int powerup = player.getItem();
       boolean change = GameController.usePowerup(player, dir);
 
       if (!change) return;
       if (sendToServer) networkClient.usePowerup(dir);
 
-      player.setItem(-1);
       gameScreen.updatePowerup();
 
       // TODO: Check what powerup and update the display in the way the powerup would
+      switch (player.getItem()) {
+        case 2:  // Trap
+          gameScreen.addTrap(player.getPos().add(dir));
+          break;
+        case 3:  // Super star
+        case 7:  // Shield
+        case 8:  // Demon
+          updatePlayer(player);
+          break;
+        case 4:  // Pickaxe
+          gameScreen.resetTile(player.getPos().add(dir));
+          break;
+        case 6:  // Gun
+          // TODO:
+          break;
+        case 9:  // Bomb
+          // TODO:
+      }
     });
   }
 
   public void playerFinished(Player player) {
     gameScreen.addFinish(player);
     gameScreen.removePlayer(player);
+  }
+
+  public void updatePlayer(Player player) {
+    gameScreen.addPlayer(player);
   }
 
   public void handleExplosion(Pair<Integer> pos) {

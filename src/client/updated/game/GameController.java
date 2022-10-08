@@ -66,7 +66,16 @@ public abstract class GameController {
     }
 
     // TODO: Check if tile is trap, if yes apply trap effect and return true, otherwise return false
-    return false;
+    if (getTile(player.getPos()) != 12) return false;
+    player.setSpeed(0);
+    player.setEffect("6");
+
+    runLater(3000, () -> {
+      player.setSpeed(1);
+      player.setEffect("0");
+      return null;
+    });
+    return true;
   }
 
   public static boolean action(Player player) {
@@ -103,9 +112,9 @@ public abstract class GameController {
         });
         break;
       case 4:  // Pickaxe
-        if (getTile(targetPos) == 0) return false;
+        if (getTile(targetPos) != 0) return false;
 
-        setTile(targetPos, 0);
+        setTile(targetPos, -1);
         break;
       case 5:  // Speed boost
         player.setSpeed(2);
@@ -116,8 +125,25 @@ public abstract class GameController {
         });
         break;
       case 6:  // Gun
-        // TODO: Check if show hits anyone, if so set hit players speed=0 and effect=6
+        boolean hit = false;
+        Pair<Integer> pos = player.getPos().add(dir);
 
+        while (getTile(pos) != 0 && !hit) {
+          for (Player p : game.getPlayers()) {
+            if (p.getPos().equals(pos)) {
+              p.setSpeed(0);
+              p.setEffect("6");
+
+              runLater(3000, () -> {
+                p.setSpeed(1);
+                p.setEffect("0");
+                return null;
+              });
+              hit = true;
+              break;
+            }
+          }
+        }
         break;
       case 7:  // Shield
         player.setImmune(true);
@@ -136,6 +162,7 @@ public abstract class GameController {
 
             runLater(5000, () -> {
               p.setEffect("0");
+              window.updatePlayer(p);
               return null;
             });
           }
