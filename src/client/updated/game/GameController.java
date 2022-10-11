@@ -109,6 +109,7 @@ public abstract class GameController {
         runLater(3000, () -> {
           player.setSpeed(1);
           player.setEffect("0");
+          window.updatePlayer(player);
           return null;
         });
         break;
@@ -144,6 +145,7 @@ public abstract class GameController {
               runLater(3000, () -> {
                 p.setSpeed(1);
                 p.setEffect("0");
+                window.updatePlayer(player);
                 return null;
               });
               hit = true;
@@ -157,6 +159,7 @@ public abstract class GameController {
 
         runLater(10000, () -> {
           player.setEffect("0");
+          window.updatePlayer(player);
           return null;
         });
         break;
@@ -198,14 +201,10 @@ public abstract class GameController {
   }
 
   public static void explosion(Pair<Integer> pos) {
-    Pair<Integer> dir = new Pair<>(0, -1);
-    explosion(pos.add(dir), dir);
-    dir = new Pair<>(1, 0);
-    explosion(pos.add(dir), dir);
-    dir = new Pair<>(0, 1);
-    explosion(pos.add(dir), dir);
-    dir = new Pair<>(-1, 0);
-    explosion(pos.add(dir), dir);
+    explosion(pos, new Pair<>(0, -1));
+    explosion(pos, new Pair<>(1, 0));
+    explosion(pos, new Pair<>(0, 1));
+    explosion(pos, new Pair<>(-1, 0));
   }
 
   private static void explosion(Pair<Integer> pos, Pair<Integer> dir) {
@@ -225,6 +224,7 @@ public abstract class GameController {
         runLater(5000, () -> {
           player.setSpeed(1);
           player.setEffect("0");
+          window.updatePlayer(player);
           return null;
         });
       }

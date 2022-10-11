@@ -248,7 +248,7 @@ public class GameScreen {
       // Check if hit player
       for (Player player : GameController.getPlayers()) {
         if (player.getPos().equals(nextPos)) {
-          updateTile(player.getPos(), images.get(player.getImageName()));
+          addPlayer(player);
           if (start) return;
 
           version = 1;
@@ -264,18 +264,65 @@ public class GameScreen {
       }
 
       // We should not draw shot on ourselves
-      if (pos.equals(GameController.getMe().getPos())) continue;
+      if (!pos.equals(GameController.getMe().getPos())) {
+        updateTile(pos, images.get(String.format("10_%d_%d_%d.jpeg", dirHor, dirVer, version)));
+        start = false;
 
-      updateTile(pos, images.get(String.format("10_%d_%d_%d.jpeg", dirHor, dirVer, version)));
+        Pair<Integer> finalPos = pos;
+        GameController.runLater(1000, () -> {
+          resetTile(finalPos);
+          return null;
+        });
+      }
 
       pos = nextPos;
-      if (start) start = false;
     }
   }
 
   public void handleExplosion(Pair<Integer> pos) {
     // TODO: Set the images on tiles in all directions to the correct explosion image.
     //       Stop if you hit a wall and redraw player if hit.
+    boolean hit = false;
+    for (Player player : GameController.getPlayers()) {
+      if (player.getPos().equals(pos)) {
+        addPlayer(player);
+        hit = true;
+        break;
+      }
+    }
+
+    if (!hit) {
+      updateTile(pos, images.get("11_1_1_0.jpeg"));
+    }
+
+    Pair<Integer> dir = new Pair<>(0, -1);
+    handleExplosion(pos.add(dir), dir);
+    dir = new Pair<>(1, 0);
+    handleExplosion(pos.add(dir), dir);
+    dir = new Pair<>(0, 1);
+    handleExplosion(pos.add(dir), dir);
+    dir = new Pair<>(-1, 0);
+    handleExplosion(pos.add(dir), dir);
+  }
+
+  public void handleExplosion(Pair<Integer> pos, Pair<Integer> dir) {
+    if (GameController.getTile(pos) == 0) return;
+
+    boolean hit = false;
+    for (Player player : GameController.getPlayers()) {
+      if (player.getPos().equals(pos)) {
+        addPlayer(player);
+        hit = true;
+        break;
+      }
+    }
+
+    if (!hit) {
+      int stop = GameController.getTile(pos.add(dir)) == 0 ? 1 : 0;
+      updateTile(pos, images.get(String.format("11_%d_%d_%d.jpeg", dir.x, dir.y, stop)));
+    }
+
+    handleExplosion(pos.add(dir), dir);
   }
 
   public void handleAction(Pair<Integer> pos) {
