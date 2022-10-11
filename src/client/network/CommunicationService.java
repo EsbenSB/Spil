@@ -1,4 +1,4 @@
-package client.updated.network;
+package client.network;
 
 import utils.PackageService;
 

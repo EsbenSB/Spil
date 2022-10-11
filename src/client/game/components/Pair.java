@@ -1,4 +1,4 @@
-package client.updated.game.components;
+package client.game.components;
 
 import java.util.Objects;
 

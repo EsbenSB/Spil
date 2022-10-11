@@ -1,6 +1,6 @@
-package client.updated;
+package client;
 
-import client.updated.gui.Window;
+import client.gui.Window;
 import javafx.application.Application;
 
 public class StartGame {

@@ -1,6 +1,6 @@
-package client.updated.gui;
+package client.gui;
 
-import client.updated.gui.utils.ErrorHandler;
+import client.gui.utils.ErrorHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

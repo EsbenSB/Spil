@@ -1,10 +1,9 @@
-package client.updated.gui;
+package client.gui;
 
-import client.updated.game.components.Game;
-import client.updated.network.NetworkClient;
-import client.updated.game.components.Pair;
-import client.updated.game.components.Player;
-import client.updated.game.GameController;
+import client.game.GameController;
+import client.network.NetworkClient;
+import client.game.components.Pair;
+import client.game.components.Player;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;

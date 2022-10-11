@@ -1,4 +1,4 @@
-package client.updated.game.components;
+package client.game.components;
 
 public class Player implements Comparable<Player> {
   private final String ID;

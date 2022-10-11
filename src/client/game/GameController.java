@@ -1,9 +1,9 @@
-package client.updated.game;
+package client.game;
 
-import client.updated.game.components.Game;
-import client.updated.game.components.Pair;
-import client.updated.game.components.Player;
-import client.updated.gui.Window;
+import client.game.components.Game;
+import client.game.components.Pair;
+import client.game.components.Player;
+import client.gui.Window;
 
 import java.util.*;
 import java.util.function.Supplier;

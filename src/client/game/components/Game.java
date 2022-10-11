@@ -1,6 +1,4 @@
-package client.updated.game.components;
-
-import client.updated.game.components.Player;
+package client.game.components;
 
 import java.util.ArrayList;
 
