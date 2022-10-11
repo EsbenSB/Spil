@@ -65,7 +65,6 @@ public abstract class GameController {
       window.playerGotPowerup();
     }
 
-    // TODO: Check if tile is trap, if yes apply trap effect and return true, otherwise return false
     if (getTile(player.getPos()) != 12) return false;
     player.setSpeed(0);
     player.setEffect("6");
@@ -79,9 +78,11 @@ public abstract class GameController {
   }
 
   public static boolean action(Player player) {
-    // TODO: Check if the tile directly in front of the player is a trap,
-    //       if yes destroy/remove trap and return true, otherwise return false
-    return false;
+    Pair<Integer> pos = player.getPos().add(player.getDir());
+
+    if (getTile(pos) != 12) return false;
+    setTile(pos, -1);
+    return true;
   }
 
   public static boolean usePowerup(Player player, Pair<Integer> dir) {
