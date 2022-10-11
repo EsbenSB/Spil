@@ -181,7 +181,8 @@ public abstract class GameController {
         }
         break;
       case 9:  // Bomb
-        if (getTile(targetPos) == 0) targetPos = targetPos.add(dir);
+        targetPos = targetPos.add(dir);
+        if (getTile(targetPos) == 0) targetPos = targetPos.subtract(dir);
         if (getTile(targetPos) == 0) return false;
 
         Pair<Integer> finalPos = new Pair<>(targetPos.x, targetPos.y);

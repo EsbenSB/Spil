@@ -147,10 +147,12 @@ public class Window extends Application {
           gameScreen.resetTile(player.getPos().add(dir));
           break;
         case 6:  // Gun
-          // TODO:
+          gameScreen.handleGun(player.getPos(), dir);
           break;
         case 9:  // Bomb
-          // TODO:
+          Pair<Integer> targetPos = player.getPos().add(dir.multiply(2));
+          if (GameController.getTile(targetPos) == 0) gameScreen.handleExplosion(targetPos.subtract(dir));
+          else gameScreen.handleExplosion(targetPos);
       }
     });
   }

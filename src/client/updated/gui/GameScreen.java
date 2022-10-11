@@ -235,6 +235,44 @@ public class GameScreen {
     updateTile(player.getPos(), images.get(player.getImageName()));
   }
 
+  public void handleGun(Pair<Integer> pos, Pair<Integer> dir) {
+    boolean start = true;
+    boolean hit = false;
+    while (!hit) {
+      Pair<Integer> nextPos = pos.add(dir);
+
+      int dirHor = dir.x;
+      int dirVer = dir.y;
+      int version = start ? -1 : 0;
+
+      // Check if hit player
+      for (Player player : GameController.getPlayers()) {
+        if (player.getPos().equals(nextPos)) {
+          updateTile(player.getPos(), images.get(player.getImageName()));
+          if (start) return;
+
+          version = 1;
+          hit = true;
+          break;
+        }
+      }
+
+      // If shot hit wall
+      if (GameController.getTile(nextPos) == 0) {
+        version = 1;
+        hit = true;
+      }
+
+      // We should not draw shot on ourselves
+      if (pos.equals(GameController.getMe().getPos())) continue;
+
+      updateTile(pos, images.get(String.format("10_%d_%d_%d.jpeg", dirHor, dirVer, version)));
+
+      pos = nextPos;
+      if (start) start = false;
+    }
+  }
+
   public void handleExplosion(Pair<Integer> pos) {
     // TODO: Set the images on tiles in all directions to the correct explosion image.
     //       Stop if you hit a wall and redraw player if hit.

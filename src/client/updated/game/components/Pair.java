@@ -15,6 +15,10 @@ public class Pair<T> {
     return new Pair<>((Integer)x + pair.x, (Integer)y + pair.y);
   }
 
+  public Pair<Integer> subtract(Pair<Integer> pair) {
+    return new Pair<>((Integer)x - pair.x, (Integer)y - pair.y);
+  }
+
   public Pair<Integer> multiply(int multiple) {
     return new Pair<>((Integer)x * multiple, (Integer)y * multiple);
   }
