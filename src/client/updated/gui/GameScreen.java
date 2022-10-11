@@ -240,6 +240,10 @@ public class GameScreen {
     //       Stop if you hit a wall and redraw player if hit.
   }
 
+  public void handleAction(Pair<Integer> pos) {
+    updateTile(pos, images.get(GameController.getTile(pos) + ".jpeg"));
+  }
+
   public void addTrap(Pair<Integer> pos) {
     updateTile(pos, images.get("12.jpeg"));
   }

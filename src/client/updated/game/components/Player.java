@@ -11,7 +11,6 @@ public class Player implements Comparable<Player> {
   private int item;
   private int speed;
   private boolean finished;
-  private boolean immune;
 
   public Player(String ID, String name) {
     this.ID = ID;
@@ -21,7 +20,6 @@ public class Player implements Comparable<Player> {
     this.effect = "0";
     this.score = 0;
     this.finished = false;
-    this.immune = false;
     this.item = -1;
     this.speed = 1;
   }
@@ -73,12 +71,6 @@ public class Player implements Comparable<Player> {
   }
   public int getItem() {
     return item;
-  }
-  public boolean isImmune() {
-    return immune;
-  }
-  public void setImmune(boolean immune) {
-    this.immune = immune;
   }
 
   @Override

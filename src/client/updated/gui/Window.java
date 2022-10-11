@@ -106,12 +106,14 @@ public class Window extends Application {
   public void playerAction(String playerID, boolean sendToServer) {
     Platform.runLater(() -> {
       Player player = GameController.getPlayer(playerID);
+
+      if (player == null) return;
       boolean change = GameController.action(player);
 
       if (!change) return;
       if (sendToServer) networkClient.action();
 
-      // TODO: Update the display
+      gameScreen.handleAction(player.getPos().add(player.getDir()));
     });
   }
 
@@ -132,7 +134,6 @@ public class Window extends Application {
 
       gameScreen.updatePowerup();
 
-      // TODO: Check what powerup and update the display in the way the powerup would
       switch (player.getItem()) {
         case 2:  // Trap
           gameScreen.addTrap(player.getPos().add(dir));

@@ -66,6 +66,12 @@ public abstract class GameController {
     }
 
     if (getTile(player.getPos()) != 12) return false;
+    if (player.getEffect().equals("3")) return false;
+    if (player.getEffect().equals("7")) {
+      player.setEffect("0");
+      return true;
+    }
+
     player.setSpeed(0);
     player.setEffect("6");
 
@@ -98,17 +104,11 @@ public abstract class GameController {
         break;
       case 3:  // Super star
         player.setSpeed(2);
-        player.setImmune(true);
-        //--player.setEffect("3");
-
-        // TODO: We need to set effect="3" and make images for the effect...
-        //       and so that we can make the player immune to damage
-        int dummyVariable = 0;  // TODO: Remove this line, as it is only here to remove warnings in the switch branch...
+        player.setEffect("3");
 
         runLater(3000, () -> {
           player.setSpeed(1);
-          player.setImmune(false);
-          //--player.setEffect("0");
+          player.setEffect("0");
           return null;
         });
         break;
@@ -132,6 +132,12 @@ public abstract class GameController {
         while (getTile(pos) != 0 && !hit) {
           for (Player p : game.getPlayers()) {
             if (p.getPos().equals(pos)) {
+              if (player.getEffect().equals("3")) break;
+              if (p.getEffect().equals("7")) {  // Is shielded
+                p.setEffect("0");
+                break;
+              }
+
               p.setSpeed(0);
               p.setEffect("6");
 
@@ -147,11 +153,9 @@ public abstract class GameController {
         }
         break;
       case 7:  // Shield
-        player.setImmune(true);
         player.setEffect("7");
 
         runLater(10000, () -> {
-          player.setImmune(false);
           player.setEffect("0");
           return null;
         });
@@ -159,6 +163,12 @@ public abstract class GameController {
       case 8:  // Demon
         for (Player p : game.getPlayers()) {
           if (!p.equals(player)) {
+            if (player.getEffect().equals("3")) break;
+            if (p.getEffect().equals("7")) {
+              p.setEffect("0");
+              break;
+            }
+
             p.setEffect("8");
 
             runLater(5000, () -> {
@@ -166,14 +176,13 @@ public abstract class GameController {
               window.updatePlayer(p);
               return null;
             });
+            break;
           }
         }
         break;
       case 9:  // Bomb
         if (getTile(targetPos) == 0) targetPos = targetPos.add(dir);
         if (getTile(targetPos) == 0) return false;
-
-        setTile(targetPos, 9);
 
         Pair<Integer> finalPos = new Pair<>(targetPos.x, targetPos.y);
         runLater(2000, () -> {
@@ -188,8 +197,39 @@ public abstract class GameController {
   }
 
   public static void explosion(Pair<Integer> pos) {
-    // TODO: Check in all directions for players. If a player is hit make speed=0 and effect="3"
-    //       If a wall is hit, stop checking
+    Pair<Integer> dir = new Pair<>(0, -1);
+    explosion(pos.add(dir), dir);
+    dir = new Pair<>(1, 0);
+    explosion(pos.add(dir), dir);
+    dir = new Pair<>(0, 1);
+    explosion(pos.add(dir), dir);
+    dir = new Pair<>(-1, 0);
+    explosion(pos.add(dir), dir);
+  }
+
+  private static void explosion(Pair<Integer> pos, Pair<Integer> dir) {
+    if (getTile(pos) == 0) return;
+
+    for (Player player : game.getPlayers()) {
+      if (player.getPos().equals(pos)) {
+        if (player.getEffect().equals("3")) continue;
+        if (player.getEffect().equals("7")) {
+          player.setEffect("0");
+          continue;
+        }
+
+        player.setSpeed(0);
+        player.setEffect("6");
+
+        runLater(5000, () -> {
+          player.setSpeed(1);
+          player.setEffect("0");
+          return null;
+        });
+      }
+    }
+
+    explosion(pos.add(dir), dir);
   }
 
   public static ArrayList<Player> getPlayers() {
