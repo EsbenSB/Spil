@@ -3,6 +3,7 @@ package client.gui;
 import client.game.GameController;
 import client.game.components.Pair;
 import client.game.components.Player;
+import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -16,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
-import test.javafx.MazeView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -126,7 +126,7 @@ public class GameScreen {
   }
 
   private void initKeyEvents() {
-    window.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (event) -> {
+    window.setKeyEventHandler(event -> {
       if (GameController.getMe().isFinished()) return;
 
       String ID = GameController.getMe().getID();
@@ -169,6 +169,7 @@ public class GameScreen {
           window.playerAction(ID, true);
       }
     });
+    window.getScene().addEventFilter(KeyEvent.KEY_PRESSED, window.getKeyEventHandler());
   }
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -180,7 +181,14 @@ public class GameScreen {
   // -------------------------------------------------------------------------------------------------------------------
 
   public void resetTile(Pair<Integer> pos) {
-    updateTile(pos, images.get("-1.jpeg"));
+    for (Player player : GameController.getPlayers()) {
+      if (player.getPos().equals(pos)) {
+        updateTile(pos, images.get(player.getImageName()));
+        return;
+      }
+    }
+
+    updateTile(pos, images.get(GameController.getTile(pos) + ".jpeg"));
   }
 
   private void updateTile(Pair<Integer> pos, Image newImage) {
@@ -200,7 +208,7 @@ public class GameScreen {
     txaFinishes.appendText(String.format("%d -> %s%n", GameController.getFinishes(), player));
     updateScores(GameController.getPlayers());
 
-    if (GameController.getFinishes() == GameController.getPlayers().size()) {
+    if (GameController.getFinishes() == GameController.getPlayers().size() && GameController.getMe().getID().equals("0")) {
       btnStart.setDisable(false);
     }
   }
@@ -231,7 +239,7 @@ public class GameScreen {
   public void addPlayer(Player player) {
     if (player.isFinished()) return;
 
-    updateTile(player.getPos(), images.get(player.getImageName()));
+    Platform.runLater(() -> updateTile(player.getPos(), images.get(player.getImageName())));
   }
 
   public void handleGun(Pair<Integer> pos, Pair<Integer> dir) {
@@ -269,7 +277,7 @@ public class GameScreen {
 
         Pair<Integer> finalPos = pos;
         GameController.runLater(1000, () -> {
-          resetTile(finalPos);
+          Platform.runLater(() -> resetTile(finalPos));
           return null;
         });
       }
@@ -279,27 +287,36 @@ public class GameScreen {
   }
 
   public void handleExplosion(Pair<Integer> pos) {
-    boolean hit = false;
-    for (Player player : GameController.getPlayers()) {
-      if (player.getPos().equals(pos)) {
-        addPlayer(player);
-        hit = true;
-        break;
+    updateTile(pos, images.get("9.jpeg"));
+    GameController.runLater(2000, () -> {
+      boolean hit = false;
+      for (Player player : GameController.getPlayers()) {
+        if (player.getPos().equals(pos)) {
+          addPlayer(player);
+          hit = true;
+          break;
+        }
       }
-    }
 
-    if (!hit) {
-      updateTile(pos, images.get("11_1_1_0.jpeg"));
-    }
+      if (!hit) {
+        Platform.runLater(() -> updateTile(pos, images.get("11_1_1_0.jpeg")));
 
-    Pair<Integer> dir = new Pair<>(0, -1);
-    handleExplosion(pos.add(dir), dir);
-    dir = new Pair<>(1, 0);
-    handleExplosion(pos.add(dir), dir);
-    dir = new Pair<>(0, 1);
-    handleExplosion(pos.add(dir), dir);
-    dir = new Pair<>(-1, 0);
-    handleExplosion(pos.add(dir), dir);
+        GameController.runLater(1000, () -> {
+          Platform.runLater(() -> resetTile(pos));
+          return null;
+        });
+      }
+
+      Pair<Integer> dir = new Pair<>(0, -1);
+      handleExplosion(pos.add(dir), dir);
+      dir = new Pair<>(1, 0);
+      handleExplosion(pos.add(dir), dir);
+      dir = new Pair<>(0, 1);
+      handleExplosion(pos.add(dir), dir);
+      dir = new Pair<>(-1, 0);
+      handleExplosion(pos.add(dir), dir);
+      return null;
+    });
   }
 
   public void handleExplosion(Pair<Integer> pos, Pair<Integer> dir) {
@@ -316,7 +333,12 @@ public class GameScreen {
 
     if (!hit) {
       int stop = GameController.getTile(pos.add(dir)) == 0 ? 1 : 0;
-      updateTile(pos, images.get(String.format("11_%d_%d_%d.jpeg", dir.x, dir.y, stop)));
+      Platform.runLater(() -> updateTile(pos, images.get(String.format("11_%d_%d_%d.jpeg", dir.x, dir.y, stop))));
+
+      GameController.runLater(1000, () -> {
+        Platform.runLater(() -> resetTile(pos));
+        return null;
+      });
     }
 
     handleExplosion(pos.add(dir), dir);
@@ -328,6 +350,10 @@ public class GameScreen {
 
   public void addTrap(Pair<Integer> pos) {
     updateTile(pos, images.get("12.jpeg"));
+  }
+
+  public void removeTrap(Pair<Integer> pos) {
+    resetTile(pos);
   }
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -359,7 +385,7 @@ public class GameScreen {
       String localPath = "/images/" + fileEntry.getName();
       if (!localPath.endsWith(".jpeg")) continue;
 
-      InputStream imageStream = MazeView.class.getResourceAsStream(localPath);
+      InputStream imageStream = GameScreen.class.getResourceAsStream(localPath);
       if (imageStream == null) continue;
 
       images.put(fileEntry.getName(), new Image(imageStream, size, size, false, false));

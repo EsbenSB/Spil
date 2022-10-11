@@ -17,7 +17,7 @@ public class Game {
     this.finishes = 0;
   }
 
-  public ArrayList<Player> getPlayers() {
+  public synchronized ArrayList<Player> getPlayers() {
     players.sort(Player::compareTo);
     return new ArrayList<>(players);
   }
@@ -46,5 +46,8 @@ public class Game {
   }
   public void addFinish() {
     finishes++;
+  }
+  public void resetFinishes() {
+    finishes = 0;
   }
 }

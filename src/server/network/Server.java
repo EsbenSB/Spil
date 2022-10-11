@@ -14,6 +14,7 @@ public class Server implements ServerInterface {
   private ServerSocket serverSocket;
   private final HashMap<String, GameServer> gameServers = new HashMap<>();
   private boolean running = true;
+  private int nextTestServerID = 0;
 
   public void start() {
     try {
@@ -115,6 +116,16 @@ public class Server implements ServerInterface {
 
         returnData.putAll(PackageService.constructClientsData(commService.getClientID(),
                 gameServer.getConnections(commService)));
+        break;
+      case "test":
+        String testServerName = "test_server_" + nextTestServerID++;
+        gameServer = createGameServer(testServerName);
+        commService.setClientName(clientName);
+        commService.setClientID("0");
+        transferCommService(commService, gameServer);
+
+        returnData.put("client_id", commService.getClientID());
+        returnData.put("server_name", testServerName);
     }
 
     commService.sendData(returnData);

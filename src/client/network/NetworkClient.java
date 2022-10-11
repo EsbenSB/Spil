@@ -110,6 +110,20 @@ public class NetworkClient {
     return null;
   }
 
+  public void testGame(String clientName) {
+    HashMap<String, String> sendData = new HashMap<>();
+    sendData.put("task", "test");
+    sendData.put("client_name", clientName);
+
+    HashMap<String, String> responseData = commService.sendDataAndWait(sendData);
+
+    clientID = responseData.get("client_id");
+    GameController.createGame(clientID, clientName);
+    window.showLobbyScreen(responseData.get("server_name"), true);
+
+    startListening();
+  }
+
   public void startGame() {
     HashMap<String, String> sendData = new HashMap<>();
     sendData.put("task", "start_server");

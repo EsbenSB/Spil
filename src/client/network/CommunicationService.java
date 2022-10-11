@@ -32,20 +32,6 @@ public class CommunicationService {
     }
   }
 
-  private void close() {
-    if (listening) {
-      stopListening();
-    }
-
-    try {
-      in.close();
-      out.close();
-      connectionSocket.close();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   public void processQuery(String query) {
     HashMap<String, String> data = PackageService.deconstructQuery(query);
     networkClient.processData(data);

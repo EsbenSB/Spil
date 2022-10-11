@@ -45,7 +45,12 @@ public class GameServer implements ServerInterface {
         }
 
         MazeGenerator mazeGenerator = new MazeGenerator(15, 10);
-        int[][] grid = mazeGenerator.getGrid();
+        int[][] grid;
+        if (name.startsWith("test_server")) {
+          grid = mazeGenerator.getTestGrid();
+        } else {
+          grid = mazeGenerator.getGrid();
+        }
 
         returnData = PackageService.constructGridData(grid);
         broadcastData(returnData, null);

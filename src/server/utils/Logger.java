@@ -6,10 +6,6 @@ public abstract class Logger {
     System.out.printf(String.format("[INFO]   %s%n", message), varargs);
   }
 
-  public static void warn(String message, Object... varargs) {
-    System.out.printf(String.format("[WARN]   %s%n", message), varargs);
-  }
-
   public static void error(String message, Object... varargs) {
     System.out.printf(String.format("[ERROR]  %s%n", message), varargs);
   }

@@ -6,8 +6,10 @@ import client.game.components.Pair;
 import client.game.components.Player;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -20,6 +22,8 @@ public class Window extends Application {
   private NetworkClient networkClient;
   private LobbyScreen lobbyScreen;
   private GameScreen gameScreen;
+
+  private EventHandler<KeyEvent> keyEventHandler;
 
   @Override
   public void start(Stage stage) {
@@ -62,6 +66,11 @@ public class Window extends Application {
   public void showGameScreen() {
     Platform.runLater(() -> {
       clearGrid();
+
+      if (gameScreen != null) {
+        GameController.resetGame();
+        getScene().removeEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+      }
 
       gameScreen = new GameScreen(this, grid);
       gameScreen.show();
@@ -131,15 +140,12 @@ public class Window extends Application {
       if (!change) return;
       if (sendToServer) networkClient.usePowerup(dir);
 
-      gameScreen.updatePowerup();
-
       switch (player.getItem()) {
         case 2:  // Trap
           gameScreen.addTrap(player.getPos().add(dir));
           break;
         case 3:  // Super star
         case 7:  // Shield
-        case 8:  // Demon
           updatePlayer(player);
           break;
         case 4:  // Pickaxe
@@ -155,6 +161,7 @@ public class Window extends Application {
       }
 
       player.setItem(-1);
+      gameScreen.updatePowerup();
     });
   }
 
@@ -164,7 +171,11 @@ public class Window extends Application {
   }
 
   public void updatePlayer(Player player) {
-    gameScreen.addPlayer(player);
+    Platform.runLater(() -> gameScreen.addPlayer(player));
+  }
+
+  public void removeTrap(Pair<Integer> pos) {
+    Platform.runLater(() -> gameScreen.removeTrap(pos));
   }
 
   public void handleExplosion(Pair<Integer> pos) {
@@ -189,6 +200,12 @@ public class Window extends Application {
   }
   public NetworkClient getNetworkClient() {
     return networkClient;
+  }
+  public EventHandler<KeyEvent> getKeyEventHandler() {
+    return keyEventHandler;
+  }
+  public void setKeyEventHandler(EventHandler<KeyEvent> keyEventHandler) {
+    this.keyEventHandler = keyEventHandler;
   }
 
   @Override

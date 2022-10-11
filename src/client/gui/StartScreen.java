@@ -15,7 +15,8 @@ public class StartScreen {
 
   private TextField txfPlayerName, txfServerName;
   private Label lblError;
-  private Button btnCreate, btnJoin;
+  private Button btnCreate;
+  private Button btnJoin;
 
   public StartScreen(Window window, GridPane mainGrid) {
     this.window = window;
@@ -24,7 +25,7 @@ public class StartScreen {
   }
 
   public void show() {
-    window.setSize(265, 210);
+    window.setSize(265, 245);
 
     mainGrid.add(new Label("Player name:"), 0, 0);
     mainGrid.add(new Label("Server name:"), 0, 1);
@@ -48,6 +49,11 @@ public class StartScreen {
     btnJoin.setOnAction((event) -> handleJoin());
     mainGrid.add(btnJoin, 0, 4, 2, 1);
     GridPane.setHalignment(btnJoin, HPos.CENTER);
+
+    Button btnTest = new Button("Create test game");
+    btnTest.setOnAction((event) -> handleTest());
+    mainGrid.add(btnTest, 0, 5, 2, 1);
+    GridPane.setHalignment(btnTest, HPos.CENTER);
   }
 
   private void handleCreate() {
@@ -88,6 +94,12 @@ public class StartScreen {
       ErrorHandler.addError(txfServerName);
       lblError.setText("Server has started the game");
     }
+  }
+
+  private void handleTest() {
+    if (unsafeInputs(txfPlayerName)) return;
+
+    window.getNetworkClient().testGame(txfPlayerName.getText());
   }
 
   private boolean unsafeInputs(TextField ...fields) {

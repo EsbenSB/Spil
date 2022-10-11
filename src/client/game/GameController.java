@@ -66,18 +66,25 @@ public abstract class GameController {
     }
 
     if (getTile(player.getPos()) != 12) return false;
-    if (player.getEffect().equals("3")) return false;
+    if (player.getEffect().equals("3")) {
+      setTile(player.getPos(), -1);
+      window.removeTrap(player.getPos());
+      return false;
+    }
     if (player.getEffect().equals("7")) {
+      setTile(player.getPos(), -1);
       player.setEffect("0");
-      return true;
+      return false;
     }
 
+    setTile(player.getPos(), -1);
     player.setSpeed(0);
     player.setEffect("6");
 
     runLater(3000, () -> {
       player.setSpeed(1);
       player.setEffect("0");
+      window.updatePlayer(player);
       return null;
     });
     return true;
@@ -168,13 +175,10 @@ public abstract class GameController {
       case 8:  // Demon
         for (Player p : game.getPlayers()) {
           if (!p.equals(player)) {
-            if (player.getEffect().equals("3")) break;
-            if (p.getEffect().equals("7")) {
-              p.setEffect("0");
-              break;
-            }
+            if (player.getEffect().equals("3") || p.getEffect().equals("7")) continue;
 
             p.setEffect("8");
+            window.updatePlayer(p);
 
             runLater(5000, () -> {
               p.setEffect("0");
@@ -190,10 +194,11 @@ public abstract class GameController {
         if (getTile(targetPos) == 0) targetPos = targetPos.subtract(dir);
         if (getTile(targetPos) == 0) return false;
 
+        window.handleExplosion(targetPos);
+
         Pair<Integer> finalPos = new Pair<>(targetPos.x, targetPos.y);
         runLater(2000, () -> {
           explosion(finalPos);
-          window.handleExplosion(finalPos);
           return null;
         });
     }
@@ -264,6 +269,13 @@ public abstract class GameController {
         return;
       }
     }
+  }
+
+  public static void resetGame() {
+    for (Player player : game.getPlayers()) {
+      player.init();
+    }
+    game.resetFinishes();
   }
 
   public static int getTile(Pair<Integer> pos) {

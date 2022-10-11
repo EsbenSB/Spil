@@ -15,10 +15,15 @@ public class Player implements Comparable<Player> {
   public Player(String ID, String name) {
     this.ID = ID;
     this.name = name;
+    this.score = 0;
+
+    init();
+  }
+
+  public void init() {
     this.pos = new Pair<>(1, 1);
     this.dir = new Pair<>(0, 1);
     this.effect = "0";
-    this.score = 0;
     this.finished = false;
     this.item = -1;
     this.speed = 1;
