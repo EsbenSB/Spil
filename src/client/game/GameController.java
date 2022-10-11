@@ -152,6 +152,8 @@ public abstract class GameController {
               break;
             }
           }
+
+          pos = pos.add(dir);
         }
         break;
       case 7:  // Shield
@@ -196,7 +198,6 @@ public abstract class GameController {
         });
     }
 
-    player.setItem(-1);
     return true;
   }
 

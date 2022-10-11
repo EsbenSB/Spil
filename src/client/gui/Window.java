@@ -153,6 +153,8 @@ public class Window extends Application {
           if (GameController.getTile(targetPos) == 0) gameScreen.handleExplosion(targetPos.subtract(dir));
           else gameScreen.handleExplosion(targetPos);
       }
+
+      player.setItem(-1);
     });
   }
 

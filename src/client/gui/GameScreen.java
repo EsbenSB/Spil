@@ -279,8 +279,6 @@ public class GameScreen {
   }
 
   public void handleExplosion(Pair<Integer> pos) {
-    // TODO: Set the images on tiles in all directions to the correct explosion image.
-    //       Stop if you hit a wall and redraw player if hit.
     boolean hit = false;
     for (Player player : GameController.getPlayers()) {
       if (player.getPos().equals(pos)) {
