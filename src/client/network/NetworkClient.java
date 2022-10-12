@@ -29,7 +29,7 @@ public class NetworkClient {
     }
   }
 
-  public void processData(HashMap<String, String> data) {
+  public synchronized void processData(HashMap<String, String> data) {
     String task = data.get("task");
 
     switch (task) {
