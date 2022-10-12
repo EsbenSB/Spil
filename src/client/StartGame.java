@@ -1,29 +1,26 @@
 package client;
 
-import AudioPlayer.SimpleAudioPlayer;
 import client.gui.Window;
 import javafx.application.Application;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
 
 public class StartGame {
-  public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-    try
-    {
-      SimpleAudioPlayer audioPlayer =
-              new SimpleAudioPlayer();
-      audioPlayer.play();
-
+  public static void main(String[] args) {
+    // Start audio track
+    try {
+      String filePath = "src/client/audio/8bit.wav";
+      AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+      Clip clip = AudioSystem.getClip();
+      clip.open(audioInputStream);
+      clip.loop(Clip.LOOP_CONTINUOUSLY);
+      clip.start();
+    } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+      throw new RuntimeException(e);
     }
-    catch (Exception ex)
-    {
-      System.out.println("Error with playing sound.");
-      ex.printStackTrace();
 
-    }
     Application.launch(Window.class);
-
   }
 }
