@@ -23,7 +23,7 @@ public class SimpleAudioPlayer
     String status;
 
     AudioInputStream audioInputStream;
-    static String filePath;
+    String filePath = "src/AudioPlayer/8bit.wav";
 
     // constructor to initialize streams and clip
     public SimpleAudioPlayer()
@@ -45,36 +45,7 @@ public class SimpleAudioPlayer
 
     public static void main(String[] args)
     {
-        try
-        {
-            filePath = "src/AudioPlayer/8bit.wav";
-            SimpleAudioPlayer audioPlayer =
-                    new SimpleAudioPlayer();
 
-            audioPlayer.play();
-            Scanner sc = new Scanner(System.in);
-
-            while (true)
-            {
-                System.out.println("1. pause");
-                System.out.println("2. resume");
-                System.out.println("3. restart");
-                System.out.println("4. stop");
-                System.out.println("5. Jump to specific time");
-                int c = sc.nextInt();
-                audioPlayer.gotoChoice(c);
-                if (c == 4)
-                    break;
-            }
-            sc.close();
-        }
-
-        catch (Exception ex)
-        {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-
-        }
     }
 
     // Work as the user enters his choice
@@ -115,6 +86,10 @@ public class SimpleAudioPlayer
         clip.start();
 
         status = "play";
+
+        if(!clip.isActive()){
+            clip.start();
+        };
     }
 
     // Method to pause the audio
